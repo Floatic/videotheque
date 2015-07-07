@@ -1,0 +1,38 @@
+/**
+ * Global
+ */
+
+$body-bg :                          #F1F1F1;
+
+/**
+ * Navbar
+ */
+
+/*$navbar-height:                    50px !default;*/
+/*$navbar-collapse-max-height:       340px !default;*/
+
+/* Bar */
+
+$navbar-default-color:              #FFFFFF !default;
+$navbar-default-bg:                 $custom_color_green !default;
+$navbar-border-radius:              none !default;
+$navbar-default-border:             none !default;
+
+/* Links */
+
+$navbar-default-link-color:         $navbar-default-color;
+$navbar-default-link-active-color:  $navbar-default-color;
+$navbar-default-link-hover-color:   $navbar-default-color;
+$navbar-default-link-active-bg:     $custom_color_green_hover;
+$navbar-default-link-hover-bg:      $custom_color_green_hover;
+
+/**
+ * Buttons
+ */
+
+$btn-default-color:                 #FFFFFF;
+$btn-default-bg:                    $custom_color_pink;
+$btn-default-border:                #FFFFFF;
+$btn-border-radius-base:            0 !default;
+$btn-border-radius-large:           0 !default;
+$btn-border-radius-small:           0 !default;

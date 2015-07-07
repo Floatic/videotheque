@@ -1,18 +1,14 @@
-$icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
+$icon-font-path: "/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 $fa-font-path: "/bower_components/font-awesome/fonts";
 
-@import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
+@import 'variables';
+@import 'customVariables';
+@import 'bootstrap-sass-official/assets/stylesheets/bootstrap';
 @import 'font-awesome/scss/font-awesome';
 
 /**
  * App-wide Styles
  */
-
-/**
- * Colors
- */
-
-$color_green : #86BE03;
 
 .browsehappy {
     margin: 0.2em 0;
@@ -26,6 +22,7 @@ $color_green : #86BE03;
 @import 'ajouter-video/ajouter-video.scss';
 @import 'liste-video/liste-video.scss';
 @import 'main/main.scss';
+@import 'header/header.scss';
 @import 'modal/modal.scss';
 @import 'navbar/navbar.scss';
 // endinjector
