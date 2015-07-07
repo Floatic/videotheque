@@ -1,0 +1,18 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th ng-repeat="column in liste_video.columns">{{column}}</th>
+                    </tr>
+                </thead>
+                <tr ng-repeat="videos in liste_video.videos">
+                    <td ng-repeat="field in videos">{{field}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
