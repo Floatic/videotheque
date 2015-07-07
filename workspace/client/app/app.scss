@@ -8,18 +8,17 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
  * App-wide Styles
  */
 
+/**
+ * Colors
+ */
+
+$color_green : #86BE03;
+
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
     color: #000;
     padding: 0.2em 0;
-}
-
-// Nav
-.navbar-header {
-    img {
-        height: 100%;
-    }
 }
 
 // Component styles are injected through grunt
@@ -28,4 +27,5 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import 'liste-video/liste-video.scss';
 @import 'main/main.scss';
 @import 'modal/modal.scss';
+@import 'navbar/navbar.scss';
 // endinjector
