@@ -1,8 +1,42 @@
+$ajouter_video_min_height: 500px;
+$ajouter_video_grey_border: #D3D3D3;
+
+// Action column
+
+.action-col {
+    border-right: 1px solid $ajouter_video_grey_border;
+    min-height: $ajouter_video_min_height;
+    text-align: right;
+
+    .btn-upload {
+        display: inline-block;
+    }
+}
+
+// Drag and drop
+
+.drop-col {
+    min-height: $ajouter_video_min_height;
+}
+
 .drag-and-drop {
-    border: 3px dotted #D3D3D3;
+    border: 3px dotted $ajouter_video_grey_border;
+    height: $ajouter_video_min_height;
+    line-height: $ajouter_video_min_height;
     margin: 10px 0 0;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+
+    p {
+        display: inline;
+        line-height: normal;
+        margin: 0;
+        vertical-align: middle;
+    }
 }
 
 .nv-file-over {
     border-color: #FF0000;
 }
+

@@ -1,4 +1,12 @@
-// Banner
+// Jumbotron
+
+.jumbotron {
+    text-align: center;
+
+    > * {
+        display: inline-block;
+    }
+}
 
 #banner {
     border-bottom: none;
@@ -28,7 +36,7 @@
     div[class ^= "col-"] {
         background-color: #FFFFFF;
         height: 280px;
-        margin: -40px 20px 0 0;
+        margin: -40px - $jumbotron-padding 20px 0 0;
         padding: 20px;
         position: relative;
         width: 335px;

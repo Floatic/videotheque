@@ -2,7 +2,11 @@
  * Global
  */
 
-$body-bg :                          #F1F1F1;
+$body-bg:                           #F1F1F1;
+$jumbotron-bg:                      $custom_color_blue;
+$jumbotron-color:                   #FFFFFF;
+$jumbotron-padding:                 60px;
+
 
 /**
  * Navbar
@@ -10,6 +14,7 @@ $body-bg :                          #F1F1F1;
 
 /*$navbar-height:                    50px !default;*/
 /*$navbar-collapse-max-height:       340px !default;*/
+$navbar-margin-bottom:              0;
 
 /* Bar */
 
