@@ -6,7 +6,8 @@ angular.module('videothequeApp', [
   'ngSanitize',
   'ui.router',
   'ui.bootstrap',
-  'angularFileUpload'
+  'angularFileUpload',
+  'dialogs.main'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider

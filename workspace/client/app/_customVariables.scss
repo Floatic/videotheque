@@ -7,6 +7,7 @@ $jumbotron-bg:                      $custom_color_blue;
 $jumbotron-color:                   #FFFFFF;
 $jumbotron-padding:                 60px;
 
+/*$table-bg-accent:                   lighten($custom_color_green, 50%);*/
 
 /**
  * Navbar
@@ -37,7 +38,7 @@ $navbar-default-link-hover-bg:      $custom_color_green_hover;
 
 $btn-default-color:                 #FFFFFF;
 $btn-default-bg:                    $custom_color_pink;
-$btn-default-border:                #FFFFFF;
+$btn-default-border:                transparent;
 $btn-border-radius-base:            0 !default;
 $btn-border-radius-large:           0 !default;
 $btn-border-radius-small:           0 !default;

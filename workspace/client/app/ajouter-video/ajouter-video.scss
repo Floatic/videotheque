@@ -1,5 +1,6 @@
 $ajouter_video_min_height: 500px;
 $ajouter_video_grey_border: #D3D3D3;
+$ajouter_video_file_over_color: red;
 
 // Action column
 
@@ -25,6 +26,7 @@ $ajouter_video_grey_border: #D3D3D3;
     line-height: $ajouter_video_min_height;
     margin: 10px 0 0;
     padding: 0;
+    position: relative;
     text-align: center;
     width: 100%;
 
@@ -32,11 +34,18 @@ $ajouter_video_grey_border: #D3D3D3;
         display: inline;
         line-height: normal;
         margin: 0;
+        opacity: 0.5;
+        user-select: none;
         vertical-align: middle;
     }
 }
 
 .nv-file-over {
-    border-color: #FF0000;
+    border-color: $ajouter_video_file_over_color;
+
+    p {
+        color: $ajouter_video_file_over_color;
+        font-weight: bold;
+    }
 }
 
