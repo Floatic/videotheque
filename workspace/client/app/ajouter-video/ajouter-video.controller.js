@@ -1,12 +1,25 @@
 'use strict';
 
 angular.module('videothequeApp')
-        .controller('AjouterVideoCtrl', function ($scope, $rootScope, FileUploader, dialogs) {
+        .controller('AjouterVideoCtrl', function ($scope, $rootScope, FileUploader, dialogs, $http) {
+            // ***************
+            // Page controller
+            //****************
+
+            //
+            // Variables
+            //
+
+            // Uploader object
             var uploader = $scope.uploader = new FileUploader({
                 url: '/api/videos'
             });
 
-            // Button event
+            //
+            // Methods
+            //
+
+            // Add button event
             $scope.upload = function () {
                 console.log('click');
                 setTimeout(function () {
@@ -14,10 +27,13 @@ angular.module('videothequeApp')
                 }, 0);
             };
 
+            //
             // Upload filters
+            //
+
             uploader.filters.push({
                 name: 'fileType',
-                fn: function(item) {
+                fn: function (item) {
                     var itemType = item.type;
                     return (itemType.indexOf('video') != -1) ? true : false;
                 }
@@ -31,37 +47,50 @@ angular.module('videothequeApp')
 //                console.info('onWhenAddingFileFailed', item, filter, options);
 
                 // Upload refused
-                dialogs.notify('Erreur','Ajout du fichier impossible');
+                dialogs.error(undefined, 'Ajout du fichier impossible');
             };
             uploader.onAfterAddingFile = function (fileItem) {
 //                console.info('onAfterAddingFile', fileItem);
 
-                // Upload file directly
-                fileItem.upload();
+                var dlg = dialogs.create('modal_form.html', 'formCtrl', {}, {size: 'lg', keyboard: true, backdrop: 'static', windowClass: 'ajouter-video-form-modal'});
+                dlg.result.then(function (videoData) {
+                    // ** Validation
+                    // Save file data
+                    $http.post('/api/videos', {video: angular.toJson(videoData)})
+                            .success(function (res) {
+                                // Upload file
+                                if (res.success) {
+                                    fileItem.upload();
+                                }
+                            });
+
+                }, function () {
+                    // ** Annulation du modal
+                });
             };
             uploader.onProgressItem = function (fileItem, progress) {
 //                console.info('onProgressItem', fileItem, progress);
 
                 // Upload progression bar
-                dialogs.wait('Veuillez patienter...', 'Votre téléchargement est en cours', progress);
+                dialogs.wait(undefined, undefined, progress);
             };
             uploader.onSuccessItem = function (fileItem, response, status, headers) {
 //                console.info('onSuccessItem', fileItem, response, status, headers);
 
                 // Success message
-                dialogs.notify('Téléchargement terminé','Votre fichier est en ligne !');
+                dialogs.notify('Téléchargement terminé', 'Votre fichier est en ligne !');
             };
             uploader.onErrorItem = function (fileItem, response, status, headers) {
 //                console.info('onErrorItem', fileItem, response, status, headers);
 
                 // Error message
-                dialogs.notify('Erreur','Le téléchargement a échoué');
+                dialogs.error(undefined, 'Le téléchargement a échoué');
             };
             uploader.onCancelItem = function (fileItem, response, status, headers) {
 //                console.info('onCancelItem', fileItem, response, status, headers);
 
                 // Error message
-                dialogs.notify('Erreur','Le téléchargement a été annulé');
+                dialogs.error(undefined, 'Le téléchargement a été annulé');
             };
             uploader.onCompleteItem = function (fileItem, response, status, headers) {
 //                console.info('onCompleteItem', fileItem, response, status, headers);
@@ -69,4 +98,69 @@ angular.module('videothequeApp')
                 // Close progression bar
                 $rootScope.$broadcast('dialogs.wait.complete');
             };
-        });
+        })
+        .controller('formCtrl', function ($scope, $modalInstance, data) {
+            // ***************
+            // Modal form controller
+            //****************
+
+            //
+            // Variables
+            //
+
+            $scope.video = {
+                name: '',
+                description: '',
+                usage: '',
+                usage_rights: ''
+            };
+
+            //
+            // Methods
+            //
+
+            // Cancel form action
+            $scope.cancel = function () {
+                $modalInstance.dismiss('Canceled');
+            }; // end cancel
+
+            // Save form action
+            $scope.save = function (form) {
+                if (form.$valid) {
+                    $modalInstance.close($scope.video);
+                } else {
+                    // Set fields dirty in case validation button would be manually enabled
+                    angular.forEach(form, function (val, key) {
+                        if (!key.match(/\$/)) {
+                            val.$dirty = true;
+                        }
+                    });
+                }
+            }; // end save
+
+            // Form can be validated by hitting the enter key
+//            $scope.hitEnter = function (evt) {
+//                if (angular.equals(evt.keyCode, 13) && !(angular.equals($scope.user.name, null) || angular.equals($scope.user.name, '')))
+//                    $scope.save();
+//            };
+        })
+        .config(['dialogsProvider', '$translateProvider', function (dialogsProvider, $translateProvider) {
+                $translateProvider.translations('fr-FR', {
+                    DIALOGS_ERROR: "Erreur",
+                    DIALOGS_ERROR_MSG: "Une erreur inconnue est survenue.",
+                    DIALOGS_CLOSE: "Fermer",
+                    DIALOGS_PLEASE_WAIT: "Veuillez patienter",
+                    DIALOGS_PLEASE_WAIT_ELIPS: "Veuillez patienter...",
+                    DIALOGS_PLEASE_WAIT_MSG: "Votre téléchargement est en cours.",
+                    DIALOGS_PERCENT_COMPLETE: "%",
+                    DIALOGS_NOTIFICATION: "Notification",
+                    DIALOGS_NOTIFICATION_MSG: "Notification d'application inconnue.",
+                    DIALOGS_CONFIRMATION: "Confirmation",
+                    DIALOGS_CONFIRMATION_MSG: "Confirmation requise.",
+                    DIALOGS_OK: "OK",
+                    DIALOGS_YES: "Oui",
+                    DIALOGS_NO: "Non"
+                });
+
+                $translateProvider.preferredLanguage('fr-FR');
+            }]);
