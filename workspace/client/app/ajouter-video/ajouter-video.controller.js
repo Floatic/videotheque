@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('videothequeApp')
-        .controller('AjouterVideoCtrl', function ($scope, $rootScope, FileUploader, dialogs, $http) {
+        .controller('AjouterVideoCtrl', function ($scope, $rootScope, FileUploader, dialogs, $http, $filter) {
             // ***************
             // Page controller
             //****************
@@ -55,14 +55,20 @@ angular.module('videothequeApp')
                 var dlg = dialogs.create('modal_form.html', 'formCtrl', {}, {size: 'lg', keyboard: true, backdrop: 'static', windowClass: 'ajouter-video-form-modal'});
                 dlg.result.then(function (videoData) {
                     // ** Validation
+
                     // Save file data
-                    $http.post('/api/videos', {video: angular.toJson(videoData)})
-                            .success(function (res) {
-                                // Upload file
-                                if (res.success) {
-                                    fileItem.upload();
-                                }
-                            });
+                    fileItem.formData.push({fileData: angular.toJson(videoData)});
+
+                    // Upload file
+                    fileItem.upload();
+
+//                    $http.post('/api/videos', {video: angular.toJson(videoData)})
+//                            .success(function (res) {
+//                                // Upload file
+//                                if (res.success) {
+//                                    fileItem.upload();
+//                                }
+//                            });
 
                 }, function () {
                     // ** Annulation du modal
@@ -112,7 +118,7 @@ angular.module('videothequeApp')
                 name: '',
                 description: '',
                 usage: '',
-                usage_rights: ''
+                usagerights: ''
             };
 
             //
@@ -163,4 +169,7 @@ angular.module('videothequeApp')
                 });
 
                 $translateProvider.preferredLanguage('fr-FR');
+
+                // Enable escaping of HTML
+                $translateProvider.useSanitizeValueStrategy('escaped');
             }]);
