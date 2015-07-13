@@ -9,6 +9,7 @@ var errors = require('./components/errors');
 module.exports = function(app) {
 
   // Insert routes below
+  app.use('/api/libcast', require('./api/libcast'));
   app.use('/api/videos', require('./api/video'));
   app.use('/api/things', require('./api/thing'));
   
