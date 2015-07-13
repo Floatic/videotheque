@@ -14,7 +14,7 @@ angular.module('videothequeApp')
       modalClass = modalClass || 'modal-default';
 
       angular.extend(modalScope, scope);
-
+console.log('passe');
       return $modal.open({
         templateUrl: 'components/modal/modal.html',
         windowClass: modalClass,
@@ -45,7 +45,7 @@ angular.module('videothequeApp')
             var args = Array.prototype.slice.call(arguments),
                 name = args.shift(),
                 deleteModal;
-
+console.log('passe');
             deleteModal = openModal({
               modal: {
                 dismissable: true,

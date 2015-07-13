@@ -1,29 +1,49 @@
+<div ng-include="'components/header/header.html'" class="header-container"></div>
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<header class="hero-unit" id="banner">
-  <div class="container">
-    <img src="assets/images/yeoman.png" alt="I'm Yeoman">
-
-    <h1>Bienvenue sur la Vidéothèque AFPA</h1>
-    <p class="lead">Gérez vos vidéos de formation simplement et en toute sécurité !</p>
-  </div>
-</header>
-
-<!-- <div class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
-        <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}</a></li>
-      </ul>
+<div class="jumbotron">
+    <div class="container">
+        <h1>Bienvenue sur la Vidéothèque AFPA</h1>
+        <p>Gérez vos vidéos de formation simplement et en toute sécurité !</p>
     </div>
-  </div>
-</div> -->
+</div>
+
+<!--<div class="hero-unit" id="banner">
+    <div class="container">
+        <div class="page-header">
+            <h1>Bienvenue sur la Vidéothèque AFPA</h1>
+        </div>
+
+        <p class="lead">Gérez vos vidéos de formation simplement et en toute sécurité !</p>
+    </div>
+</div>-->
+
+<div class="container highlight">
+    <div class="row">
+        <div class="col-xs-6 col-md-4">
+            <h2>Ajouter une vidéo</h1>
+                <ul class="nav nav-stacked">
+                    <li><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> Uploadez n'importe quel format row</li>
+                    <li><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> Utilisez le lien généré pour enrichir votre support de formation</li>
+                </ul>
+
+                <a class="btn btn-default btn-lg" href="/ajouter-video" role="button">Ajouter une vidéo</a>
+        </div>
+        <div class="col-xs-6 col-md-4">
+            <h2>Voir vos vidéos uploadées</h1>
+                <ul class="nav nav-stacked">
+                    <li><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> Visualisez / Gérez vos vidéos</li>
+                    <li><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> Utiliser les filtres de colonne pour les trier !</li>
+                </ul>
+
+                <a class="btn btn-default btn-lg" href="/liste-video" role="button">Voir mes vidéos</a>
+        </div>
+    </div>
+</div>
 
 <footer class="footer">
-  <div class="container">
-      <p>Angular Fullstack v2.0.13 |
-        <a href="https://twitter.com/tyhenkel">@tyhenkel</a> |
-         <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
-  </div>
+    <div class="container">
+        <p>Videotheque AFPA v0.1 |
+            <a href="https://twitter.com/oatic">@oatic</a>
+    </div>
 </footer>

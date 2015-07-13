@@ -1,0 +1,26 @@
+.header-container {
+    background-color: #FFFFFF;
+}
+
+.header {
+    height: 130px;
+    line-height: 130px;
+
+    .brand {
+        display: inline-block;
+        line-height: normal;
+        margin: 0 10px 0 0;
+        vertical-align: middle;
+
+        img {
+            height: 100%;
+        }
+    }
+
+    .text {
+        color: $custom_color_green;
+        display: inline-block;
+        line-height: normal;
+        vertical-align: middle;
+    }
+}
