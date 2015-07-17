@@ -1,0 +1,64 @@
+{
+  "name": "libcast-digest-client",
+  "description": "Module allowing basic communication with libcast and file creation using Digest http authentication.",
+  "version": "0.0.1",
+  "contributors": [
+    {
+      "name": "Florian Grignoux",
+      "email": "florian.grignoux@oatic.fr",
+      "url": "http://www.oatic.fr"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oatic/libcast-digest-client"
+  },
+  "keywords": [
+    "digest",
+    "client",
+    "libcast"
+  ],
+  "dependencies": {
+    "lodash": "~3.10.0",
+    "request": "~2.58.0"
+  },
+  "devDependencies": {
+  },
+  "engines": {
+    "node": ">= 0.12.0"
+  },
+  "files": [
+    "LICENSE",
+    "index.js"
+  ],
+  "scripts": {
+  },
+  "gitHead": "",
+  "bugs": {
+    "url": "https://github.com/oatic/libcast-digest-client/issues"
+  },
+  "homepage": "https://github.com/oatic/libcast-digest-client",
+  "_id": "libcast-digest-client@0.0.1",
+  "_shasum": "551b8a6015093701bcacc964916b1ae06578f37b",
+  "_from": "libcast-digest-client@0.0.1",
+  "_npmVersion": "2.11.2",
+  "_nodeVersion": "0.12.6",
+  "_npmUser": {
+    "name": "florian.grignoux",
+    "email": "florian.grignoux@oatic.fr"
+  },
+  "maintainers": [
+    {
+      "name": "Florian Grignoux",
+      "email": "florian.grignoux@oatic.fr"
+    }
+  ],
+  "dist": {
+    "shasum": "551b8a6015093701bcacc964916b1ae06578f37b",
+    "tarball": "http://registry.npmjs.org/libcast-digest-client/-/libcast-digest-client-0.0.1.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/libcast-digest-client/-/libcast-digest-client-0.0.1.tgz",
+  "private": true
+}

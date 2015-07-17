@@ -5,29 +5,40 @@ var digestRequest = require('request-digest')('guillaume.burguiere@oatic.fr', '3
 var fs = require('fs');
 var util = require('util');
 
-// Get list of libcasts
+
+
+var client = require('server/components/libcast-digest-client');
+
 exports.index = function (req, res) {
+console.log(client);
+//console.log(fs.existsSync('./server/components/libcast-digest-client'));
 
-    digestRequest.request({
-        host: 'https://console.libcast.com',
-        path: '/services/stream/ma-chaine-2247/resources',
-        port: 80,
-        method: 'GET',
-        headers: {
-            Accept: 'application/vnd.libcast+x-yaml'
-        }
-    }, function (error, response, body) {
-        if (error) {
-            throw error;
-        }
+res.json([]);
+}
 
-        console.log('Http code : ' + response.statusCode);
-//        console.log('Writing request 2');
+// Get list of libcasts
+//exports.index = function (req, res) {
 //
-//        fs.writeFileSync('request2.txt', util.inspect(response));
-
-        console.log(body);
-    });
-
-    res.json([]);
-};
+//    digestRequest.request({
+//        host: 'https://console.libcast.com',
+//        path: '/services/stream/ma-chaine-2247/resources',
+//        port: 80,
+//        method: 'GET',
+//        headers: {
+//            Accept: 'application/vnd.libcast+x-yaml'
+//        }
+//    }, function (error, response, body) {
+//        if (error) {
+//            throw error;
+//        }
+//
+//        console.log('Http code : ' + response.statusCode);
+////        console.log('Writing request 2');
+////
+////        fs.writeFileSync('request2.txt', util.inspect(response));
+//
+//        console.log(body);
+//    });
+//
+//    res.json([]);
+//};
