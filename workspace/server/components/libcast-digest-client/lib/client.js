@@ -7,13 +7,13 @@
 // by digest authentication.
 //
 
-var Client = function() {
-    var _ = require('lodash');
-    var digest = require('./lib/request-digest')(this.user, this.password);
-//    var fs = require('fs');
+let Client = function() {
+    let _ = require('lodash');
+    let digest = require('./lib/request-digest')(this.user, this.password);
+//    let fs = require('fs');
 
     // Constructor
-    var Client = function(user, password) {
+    let Client = function(user, password) {
         this.host = 'https://console.libcast.com';
         this.port = 80;
         this.headers = '';
@@ -21,6 +21,7 @@ var Client = function() {
         this.password = password;
     }
 
+
     //
     // # Upload
     //
@@ -28,24 +29,54 @@ var Client = function() {
     //
     //
 
+    Client.prototype.upload = function(Video) {
+        this.client.upload();
+    }
+
     //
-    // # Get video list
+    // # Get video data
     //
     // Sends a GET request to the Libcast API
     //
     //
 
+    Client.prototype.show = function(Video) {
+        
+    }
+
     //
-    // # Upload
+    // # Update video
     //
-    // Sends a POST request to the Libcast API
+    // Sends a PUT request to the Libcast API
     //
     //
 
+    Client.prototype.update = function(Video) {
+        
+    }
+
+
     //
-    // # Destroy
+    // # Destroy video
     //
     // Sends a DELETE request to the Libcast API
     //
     //
+
+    Client.prototype.destroy = function(Video) {
+        
+    }
+
+
+    //
+    // # Set video to draft mode
+    //
+    // Sends a PUT request to the Libcast API
+    //
+    //
+
+    Client.prototype.setDraft = function(Video) {
+        
+    }
+
 }
