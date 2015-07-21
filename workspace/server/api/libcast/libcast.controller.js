@@ -2,28 +2,29 @@
 
 //var _ = require('lodash');
 // var digestRequest = require('request-digest')('guillaume.burguiere@oatic.fr', '3NEgF7THxtBKMwRm2SqmpvLSI0ff3y6v');
-var fs = require('fs');
+// var fs = require('fs');
 var util = require('util');
-
-
-
-var client = require('libcast-digest-client');
+var debug = require('debug')('http');
+var client = require('server/components/libcast-digest-client');
 
 exports.index = function(req, res) {
-	console.log('passe dans controller');
+	debug('passe dans controller');
+	debug('Client type : ', typeof client);
+
 	client.show('laccueil-du-stagiaire-a-lafpa')
-		.then(function(res) {
-			// console.log(res);
-			// res.json([]);
-			let Video = client.loadVideo(res);
-			console.log(Video);
-			res.send(Video);
+		.then(function(data) {
+			debug('Promise success');
+			debug('Response type : %s', typeof data);
+			let Video = client.loadVideo(data);
+			// debug(Video);
+			res.json(Video);
+			// res.send('success');
 		})
 		.catch(function(error) {
-			console.log(error);
+			debug(error);
 			res.status(500).send(error.message);
 		});
-	//console.log(fs.existsSync('./server/components/libcast-digest-client'));
+	//debug(fs.existsSync('./server/components/libcast-digest-client'));
 
 }
 
@@ -46,12 +47,12 @@ exports.index = function(req, res) {
 //            throw error;
 //        }
 //
-//        console.log('Http code : ' + response.statusCode);
-////        console.log('Writing request 2');
+//        debug('Http code : ' + response.statusCode);
+////        debug('Writing request 2');
 ////
 ////        fs.writeFileSync('request2.txt', util.inspect(response));
 //
-//        console.log(body);
+//        debug(body);
 //    });
 //
 //    res.json([]);

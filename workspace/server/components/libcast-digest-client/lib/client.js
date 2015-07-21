@@ -7,6 +7,8 @@
 // by digest authentication.
 //
 
+var debug = require('debug')('client');
+
 let Client = function() {
     // Load needed modules
     let _ = require('underscore.string');
@@ -40,7 +42,7 @@ let Client = function() {
     //
 
     Client.prototype.upload = function() {
-        console.log('test');
+        debug('test');
 
         return false;
     };
@@ -53,32 +55,35 @@ let Client = function() {
     //
 
     Client.prototype.show = function(slug) {
-        console.log('======= HEADERS ========')
-        console.log(this._setRequestParams(slug, 'GET'));
+        debug('======= HEADERS ========');
+        debug(this._setRequestParams(slug, 'GET'));
         let self = this;
 
         return new Promise((resolve, reject) => {
+debug('======= PROMISE START ========')
             self.digest.request(self._setRequestParams(slug, 'GET'), function(error, response, body) {
                 if (error) {
+                    debug('digest error');
                     throw error;
                 }
 
                 // let Video = require('./entity/video')(stream, slug);
 
-                // console.log('Http code : ' + response.statusCode);
+                // debug('Http code : ' + response.statusCode);
 
                 if (response.statusCode !== 200) {
+                    debug('error response code %s', response.statusCode);
                     reject('Problem, HTTP code ' + response.statusCode);
                     return;
                 }
 
-                // console.log('Http body : ');
-                // console.log(body);
-                // console.log('Writing request 2');
+                // debug('Http body : ');
+                // debug(body);
+                // debug('Writing request 2');
                 // fs.writeFileSync('request2.txt', util.inspect(response));
-
+debug('before resolve');
                 resolve(self._formatResponse(body));
-
+debug('after resolve');
                 return true;
             });
 
@@ -192,6 +197,10 @@ let Client = function() {
     return Client;
 }();
 
-module.exports = function(username, password) {
-    return new Client(username, password);
-}
+module.exports = (username, password) => {
+    debug('client load');
+    let test = new Client(username, password);
+    debug(typeof test);
+    debug(typeof test.show);
+    return test;
+};
