@@ -2,6 +2,7 @@
   "name": "libcast-digest-client",
   "description": "Module allowing basic communication with libcast and file creation using Digest http authentication.",
   "version": "0.0.1",
+  "main": "index.js",
   "contributors": [
     {
       "name": "Florian Grignoux",
@@ -21,21 +22,20 @@
   ],
   "dependencies": {
     "lodash": "~3.10.0",
-    "underscore.string": "~3.1.1",
     "request": "~2.58.0",
+    "underscore.string": "~3.1.1",
     "xml2js": "~0.4.9"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "engines": {
     "node": ">= 0.12.0"
   },
   "files": [
+    "lib",
     "LICENSE",
     "index.js"
   ],
-  "scripts": {
-  },
+  "scripts": {},
   "gitHead": "",
   "bugs": {
     "url": "https://github.com/oatic/libcast-digest-client/issues"
@@ -60,7 +60,9 @@
     "shasum": "551b8a6015093701bcacc964916b1ae06578f37b",
     "tarball": "http://registry.npmjs.org/libcast-digest-client/-/libcast-digest-client-0.0.1.tgz"
   },
-  "directories": {},
+  "directories": {
+    "lib": "./lib"
+  },
   "_resolved": "https://registry.npmjs.org/libcast-digest-client/-/libcast-digest-client-0.0.1.tgz",
   "private": true
 }

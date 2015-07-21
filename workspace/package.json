@@ -12,7 +12,7 @@
     "errorhandler": "~1.0.0",
     "express": "~4.0.0",
     "express-session": "~1.0.2",
-    "libcast-digest-client": "file:server\\components\\libcast-digest-client",
+    "libcast-digest-client": "file:server/components/libcast-digest-client",
     "lodash": "~3.10.0",
     "method-override": "~1.0.0",
     "moment": "~2.10.3",

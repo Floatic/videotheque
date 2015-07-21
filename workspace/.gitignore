@@ -8,5 +8,5 @@ dist
 /server/config/local.env.js
 /server/uploads
 nbproject
-.sublime-project
-.sublime-workspace
+*.sublime-project
+*.sublime-workspace

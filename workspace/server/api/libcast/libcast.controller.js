@@ -7,7 +7,7 @@ var util = require('util');
 
 
 
-var client = require('server/components/libcast-digest-client');
+var client = require('libcast-digest-client');
 
 exports.index = function(req, res) {
 	console.log('passe dans controller');
