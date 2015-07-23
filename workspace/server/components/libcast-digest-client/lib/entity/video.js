@@ -7,7 +7,7 @@
 //
 //
 
-var debug = require('debug')('video');
+let debug = require('debug')('video');
 
 let Video = function() {
 	let _ = require('lodash');
@@ -20,13 +20,24 @@ let Video = function() {
 	}
 
 	//
+	// # Update video properties from json object
+	//
+	//
+
+	Video.prototype.updateProperties = function (data) {
+		debug('Update properties');
+		this._setProperties(data);
+		debug('video slug : %s', this.slug);
+	};
+
+	//
 	// # Set video properties from json object
 	//
 	//
 
 	Video.prototype._setProperties = function setProperties(data) {
 		debug('Set properties');
-		_.assign(this, data.resource);
+		_.assign(this, data);
 		debug('video slug : %s', this.slug);
 	};
 

@@ -41,7 +41,7 @@ echo "***Update npm and install global modules***"
 
 npm config set prefix '/home/vagrant/npm-global'
 npm i -g npm@latest
-npm i -g bower grunt-cli yo generator-angular-fullstack
+npm i -g bower grunt-cli yo generator-angular-fullstack node-inspector
 
 echo "***Set proper rights on npm-global directory***"
 

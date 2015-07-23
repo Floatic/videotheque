@@ -7,7 +7,7 @@ angular.module('videothequeApp')
             // Variables
             //
 
-            $scope.liste_video = {
+            $scope.listeVideo = {
                 columns: [
                     {
                         label: 'Id',
@@ -15,7 +15,7 @@ angular.module('videothequeApp')
                     },
                     {
                         label: 'Description',
-                        field: 'name',
+                        field: 'title',
                         sortable: true,
                         style: 'width: 60%; text-align: left;'
                     },
@@ -41,16 +41,16 @@ angular.module('videothequeApp')
             };
 
             $http.get('/api/videos').success(function (liste) {
-                var videoListe = JSON.parse(liste)
+                var videoListe = JSON.parse(liste);
 //                console.log(liste[0]);
 //                console.log(videoListe[0]);
 //                console.log(typeof liste);
 //                console.log(typeof angular.toJson(liste));
 
-                $scope.liste_video.videos = videoListe;
+                $scope.listeVideo.videos = videoListe;
             });
 
-            $scope.predicate = 'name';
+            $scope.predicate = 'title';
             $scope.reverse = false;
 
             //
@@ -68,26 +68,31 @@ angular.module('videothequeApp')
             //
 
             return function (size) {
-                if (isNaN(size))
+                if (isNaN(size)) {
                     size = parseInt(size);
+                }
 
-                if (size < 1024)
+                if (size < 1024) {
                     return size + ' O';
+                }
 
                 size /= 1024;
 
-                if (size < 1024)
+                if (size < 1024) {
                     return Math.round(size) + ' Ko';
+                }
 
                 size /= 1024;
 
-                if (size < 1024)
+                if (size < 1024) {
                     return size.toFixed(2) + ' Mo';
+                }
 
                 size /= 1024;
 
-                if (size < 1024)
+                if (size < 1024) {
                     return size.toFixed(2) + ' Go';
+                }
 
                 size /= 1024;
 

@@ -25,7 +25,8 @@ Vagrant.configure(2) do |config|
   config.vm.network "forwarded_port", guest: 9000, host: 9000
   config.vm.network "forwarded_port", guest: 35729, host: 35729
   config.vm.network "forwarded_port", guest: 3000, host: 3000
-  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 5858, host: 5858
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -50,9 +51,10 @@ Vagrant.configure(2) do |config|
   #   # Display the VirtualBox GUI when booting the machine
   #   vb.gui = true
   #
-  
+
     # Customize the amount of memory on the VM:
     vb.memory = "1024"
+    vb.cpus = "3"
   end
 
   #

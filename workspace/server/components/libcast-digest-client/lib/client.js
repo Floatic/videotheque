@@ -7,21 +7,28 @@
 // by digest authentication.
 //
 
-var debug = require('debug')('client');
+// DEBUG=libcastcontroller,requestdigest,client,video node --harmony server/app.js
+
+let debug = require('debug')('client');
 
 let Client = function() {
     // Load needed modules
-    let _ = require('underscore.string');
     let fs = require('fs');
     let util = require('util');
     let parseXml = require('xml2js').parseString;
+    let _ = require('lodash');
+    let _string = require('underscore.string');
+    let moment = require('moment');
+
+    // Load Video object for reference
+    let Video = require('./entity/video');
 
     // API paths
     const path_file = '/services/file/%(slug)s';
     const path_resource = '/services/resource/%(slug)s';
+    const path_add_file = '/services/files';
+    const path_add_resource = '/services/stream/%(stream)s/resources';
 
-
-    //    let fs = require('fs');
 
     // Constructor
     let Client = function(username, password) {
@@ -30,7 +37,7 @@ let Client = function() {
         this.headers = '';
         this.username = username;
         this.password = password;
-        this.digest = require('request-digest')(username, password);
+        this.digest = require('./request-digest')(username, password);
     };
 
 
@@ -41,10 +48,82 @@ let Client = function() {
     //
     //
 
-    Client.prototype.upload = function() {
-        debug('test');
+    Client.prototype.upload = function(file, video) {
 
-        return false;
+        debug('======= UPLOAD ========');
+        debug('instance of video : %s', video instanceof Video);
+
+        let self = this;
+        let options = {
+            method: 'POST',
+            path: path_add_file,
+            file: file
+        };
+
+        // Create the file
+        debug('======= START SEND FILE ========');
+        self.digest.request(self._setRequestParams(options), function(error, response, body) {
+            if (error) {
+                debug('digest error : %s', error.message);
+                debug(util.inspect(error));
+                throw error;
+            }
+
+            // let Video = require('./entity/video')(stream, slug);
+            // debug('Http code : ' + response.statusCode);
+
+            if (response.statusCode !== 201) {
+                debug('error response code %s', response.statusCode);
+                return;
+            }
+
+            // debug('Http response : ');
+            // debug(response);
+            // debug('Http body : ');
+            // debug(body);
+            // debug('Writing request 2');
+            // fs.writeFileSync('request2.txt', util.inspect(response));
+
+            let fileInfo = self._formatResponse(body).file;
+
+            debug(fileInfo);
+
+            // Create a publication
+            if (!fileInfo.slug) {
+                debug('No slug');
+                return;
+            }
+
+            options = {
+                method: 'POST',
+                form: {
+                    file: fileInfo.slug[0],
+                    title: video.title,
+                    // subtitle: '',
+                    // published_at: moment().format() + '+01:00',
+                    visibility: (video.usage === 'communication') ? 'visible' : 'hidden'
+                },
+                path: self._setRequestUrl(path_add_resource, {
+                    'stream': (video.usage === 'communication') ? 'communication-1' : 'pedagogique'
+                })
+            };
+
+            debug('======= START SEND PUBLICATION ========');
+            self.digest.request(self._setRequestParams(options), function(error, response, body) {
+                if (error) {
+                    debug('digest error : %s', error.message);
+                    throw error;
+                }
+
+                if (response.statusCode !== 201) {
+                    debug('error response code %s', response.statusCode);
+                    return;
+                }
+
+                debug('======= PUBLICATION CREATED ========');
+            });
+        });
+
     };
 
     //
@@ -56,12 +135,20 @@ let Client = function() {
 
     Client.prototype.show = function(slug) {
         debug('======= HEADERS ========');
-        debug(this._setRequestParams(slug, 'GET'));
         let self = this;
+        let options = {
+            method: 'GET',
+            path: self._setRequestUrl(path_resource, {
+                'slug': slug
+            })
+        };
+
+        debug('----- options -------');
+        debug(options);
 
         return new Promise((resolve, reject) => {
-debug('======= PROMISE START ========')
-            self.digest.request(self._setRequestParams(slug, 'GET'), function(error, response, body) {
+            debug('======= PROMISE START ========');
+            self.digest.request(self._setRequestParams(options), function(error, response, body) {
                 if (error) {
                     debug('digest error');
                     throw error;
@@ -81,9 +168,9 @@ debug('======= PROMISE START ========')
                 // debug(body);
                 // debug('Writing request 2');
                 // fs.writeFileSync('request2.txt', util.inspect(response));
-debug('before resolve');
+                debug('before resolve');
                 resolve(self._formatResponse(body));
-debug('after resolve');
+                debug('after resolve');
                 return true;
             });
 
@@ -152,18 +239,16 @@ debug('after resolve');
     //
     //
 
-    Client.prototype._setRequestParams = function setRequestParams(slug, method) {
-        return {
+    Client.prototype._setRequestParams = function setRequestParams(options) {
+        _.merge(options, {
             host: this.host,
-            path: this._setRequestUrl(path_resource, {
-                slug: slug
-            }),
-            port: this.port,
-            method: method
+            port: this.port
                 // headers: {
                 //     Accept: 'application/vnd.libcast+x-yaml'
                 // }
-        };
+        });
+
+        return options;
     };
 
     //
@@ -174,7 +259,7 @@ debug('after resolve');
     //
 
     Client.prototype._setRequestUrl = function setRequestUrl(url, params) {
-        return _.sprintf(url, params);
+        return _string.sprintf(url, params);
     };
 
     //
@@ -199,8 +284,5 @@ debug('after resolve');
 
 module.exports = (username, password) => {
     debug('client load');
-    let test = new Client(username, password);
-    debug(typeof test);
-    debug(typeof test.show);
-    return test;
+    return new Client(username, password);
 };

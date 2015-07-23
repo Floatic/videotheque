@@ -12,7 +12,7 @@ angular.module('videothequeApp')
 
             // Uploader object
             var uploader = $scope.uploader = new FileUploader({
-                url: '/api/videos'
+                url: '/api/libcast'
             });
 
             // Valid formats
@@ -24,7 +24,7 @@ angular.module('videothequeApp')
 
             // Add button event
             $scope.upload = function () {
-                console.log('click');
+                // console.log('click');
                 setTimeout(function () {
                     angular.element('#upload').trigger('click');
                 }, 0);
@@ -88,7 +88,7 @@ angular.module('videothequeApp')
 //                console.info('onSuccessItem', fileItem, response, status, headers);
 
                 // Success message
-                dialogs.notify('Téléchargement terminé', 'Votre fichier est en ligne !');
+                dialogs.notify('Téléchargement terminé', 'Votre fichier a correctement été téléchargé sur notre serveur. <br>Le téléchargement sur le serveur Libcast est en cours. <br>Veuillez vous rendre sur la <a href="/liste-video">liste des vidéos</a> pour suivre l\'état d\'avancement de votre vidéo');
             };
             uploader.onErrorItem = function (fileItem, response, status, headers) {
 //                console.info('onErrorItem', fileItem, response, status, headers);
@@ -119,7 +119,7 @@ angular.module('videothequeApp')
             //
 
             $scope.video = {
-                name: '',
+                title: '',
                 description: '',
                 usage: '',
                 usagerights: ''

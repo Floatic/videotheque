@@ -15,5 +15,5 @@ app/tests/coverage/
 .slugignore
 .travis.yml
 vagrant_setup_provision.sh~
-.sublime-project
-.sublime-workspace
+*.sublime-project
+*.sublime-workspace

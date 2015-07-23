@@ -15,25 +15,34 @@ var errorHandler = require('errorhandler');
 var path = require('path');
 var multer = require('multer');
 var moment = require('moment');
+// var session = require('express-session');
 var config = require('./environment');
 
-module.exports = function (app) {
+module.exports = function(app) {
     var env = app.get('env');
 
     app.set('views', config.root + '/server/views');
     app.engine('html', require('ejs').renderFile);
     app.set('view engine', 'html');
     app.use(compression());
-    app.use(bodyParser.urlencoded({extended: false}));
+    app.use(bodyParser.urlencoded({
+        extended: false
+    }));
     app.use(bodyParser.json());
     app.use(methodOverride());
     app.use(cookieParser());
     app.use(multer({
         dest: config.root + '/server/uploads/',
-        rename: function (fieldname, filename) {
+        rename: function(fieldname, filename) {
             return moment().format('YYYY-MM-DD_HH-mm-ss_') + filename.replace(/\W+/g, '-').toLowerCase()
         }
     }))
+/*    app.use(session({
+        // genid: function(req) {
+        //   return genuuid() // use UUIDs for session IDs
+        // },
+        secret: 'keyboard cat'
+    }));*/
 
     if ('production' === env) {
         app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
