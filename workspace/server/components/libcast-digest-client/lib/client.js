@@ -26,7 +26,7 @@ let Client = function() {
     // API paths
     const path_file = '/services/file/%(slug)s';
     const path_resource = '/services/resource/%(slug)s';
-    const path_add_file = '/services/files';
+    const path_all_files = '/services/files';
     const path_add_resource = '/services/stream/%(stream)s/resources';
 
 
@@ -56,7 +56,7 @@ let Client = function() {
         let self = this;
         let options = {
             method: 'POST',
-            path: path_add_file,
+            path: path_all_files,
             file: file
         };
 
@@ -150,7 +150,7 @@ let Client = function() {
             debug('======= PROMISE START ========');
             self.digest.request(self._setRequestParams(options), function(error, response, body) {
                 if (error) {
-                    debug('digest error');
+                    debug('digest error : %s', error.message);
                     throw error;
                 }
 
@@ -184,6 +184,43 @@ let Client = function() {
 
 
 
+    };
+
+    //
+    // # Get video file list
+    //
+    // Sends a GET request to the Libcast API
+    //
+    //
+
+    Client.prototype.getFiles = function() {
+        let self = this;
+        let options = {
+            method: 'GET',
+            path: path_all_files
+        };
+
+        // Set a promise to be handled
+        return new Promise((resolve, reject) => {
+            debug('======= START GET FILES LIST ========');
+            self.digest.request(self._setRequestParams(options), function(error, response, body) {
+                if (error) {
+                    debug('digest error : %s', error.message);
+                    throw error;
+                }
+
+                if (response.statusCode !== 200) {
+                    debug('error response code %s', response.statusCode);
+                    reject('Problem, HTTP code ' + response.statusCode);
+                    return;
+                }
+
+                debug('Trigger resolve');
+                resolve(self._formatResponse(body));
+
+                return true;
+            });
+        });
     };
 
     //
@@ -276,9 +313,28 @@ let Client = function() {
             parsed = result;
         });
 
+        // return this._cleanResponse(parsed);
         return parsed;
     };
 
+    //
+    // # Cleans a data object parsed from xml
+    //
+    // Returns a json object
+    //
+    //
+/*    Client.prototype._cleanResponse = function cleanResponse(res) {
+        if(_.size(res) > 1) {
+            _.forEach(res, function (value, key) {
+                this._cleanResponse(value);
+            });
+        } else if(typeof res === Array && _.size(res) === 1) {
+            res = res[0]; // If the entry is an array wit just 1 element, clean it
+        } else {
+            return res;
+        }
+    };
+*/
     return Client;
 }();
 

@@ -1,6 +1,6 @@
 'use strict';
 
-//let _ = require('lodash');
+let _ = require('lodash');
 let request = require('request');
 let fs = require('fs');
 let filePath = 'server/components/data/videos.txt';
@@ -17,9 +17,9 @@ exports.index = function(req, res) {
         }
 
         // Prepare file data
-        //        let fileList = '{' + data + '}';
+        let fileList = JSON.parse('{' + _.trimLeft(data, ',') + '}');
 
-        res.send([data]);
+        res.json(fileList);
     });
 
     // Get uploaded files

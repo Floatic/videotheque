@@ -40,14 +40,14 @@ angular.module('videothequeApp')
                 ]
             };
 
-            $http.get('/api/videos').success(function (liste) {
-                var videoListe = JSON.parse(liste);
+            $http.get('/api/libcast/list-videos').success(function (liste) {
+                // var videoListe = JSON.parse(liste);
 //                console.log(liste[0]);
 //                console.log(videoListe[0]);
 //                console.log(typeof liste);
 //                console.log(typeof angular.toJson(liste));
 
-                $scope.listeVideo.videos = videoListe;
+                $scope.listeVideo.videos = liste;
             });
 
             $scope.predicate = 'title';

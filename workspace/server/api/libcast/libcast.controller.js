@@ -1,8 +1,8 @@
 'use strict';
 
-//let _ = require('lodash');
+let _ = require('lodash');
 let fs = require('fs');
-// let util = require('util');
+let util = require('util');
 let debug = require('debug')('libcastcontroller');
 let client = require('server/components/libcast-digest-client');
 let listeVideoPath = 'server/components/data/videos.txt';
@@ -28,12 +28,92 @@ exports.index = function(req, res) {
 			res.json(video);
 		})
 		.catch(function(error) {
-			debug(error);
+			debug('error : %s', error.message);
 			res.status(500).send(error.message);
 		});
 	//debug(fs.existsSync('./server/components/libcast-digest-client'));
 
 };
+
+//
+// # List
+//
+// Get the uploaded video list
+//
+//
+
+exports.list = function(req, res) {
+	client.getFiles()
+		.then(function(data) {
+			debug('Promise success');
+			// debug(util.inspect(data));
+
+			let fileList = {};
+
+			// Loop on the data to keep what we need and clean
+			debug('========== SETUP FILELIST ==========');
+			_.forEach(data.files.file, function(file, index) {
+				// for(let file of data) {
+
+				// debug(util.inspect(file));
+
+				if (file.slug[0] !== undefined && file.type[0] === 'video') {
+					// debug('========== FOUND FILE ==========');
+					// Clean file
+					_.forEach(file, function(prop, index) {
+						// debug('prop');
+						// debug(prop);
+						// debug('index : %s', index);
+						// debug('typeof prop : %s && _.size(prop) : %s && prop instanceof Array : %s', typeof prop, _.size(prop), prop instanceof Array);
+
+						if(prop instanceof Array && _.size(prop) === 1) {
+							file[index] = prop[0];
+						}
+					});
+
+					// debug(file);
+
+					// Save file
+					fileList[file.name] = file;
+				}
+			});
+
+			debug(util.inspect(fileList));
+
+			// Get the data from our video.txt and merge them with those from libcast
+			debug('========== SETUP VIDEOLIST ==========');
+		    fs.readFile(listeVideoPath, function(err, data) {
+		        if (err) {
+		        	debug('error : %s', err.message);
+		            res.json({
+		                'success': false
+		            });
+		            throw err;
+		        }
+
+		        // Prepare file data
+		        let videoList = JSON.parse('{' + _.trimLeft(data, ',') + '}');
+
+		        // Merge the data
+		        videoList = _.merge({}, videoList, fileList);
+
+		        // Remove videos without data
+		        let finalList = {};
+		        _.forEach(videoList, function(video, fileName) {
+		        	if(video.title !== undefined) {
+		        		finalList[fileName] = video;
+		        	}
+		        });
+
+				res.json(finalList);
+		    });
+		})
+		.catch(function(error) {
+			debug(error);
+			res.status(500).send(error.message);
+		});
+};
+
 
 //
 // # Create
@@ -50,6 +130,8 @@ exports.create = function(req, res) {
 		fileData.filename = req.files.file.name;
 		fileData.filesize = req.files.file.size;
 
+		debug(fileData);
+
 		// We want to save the video data in a video.txt file
 		fs.readFile(listeVideoPath, function(err, data) {
 			debug('===== start readfile ====');
@@ -63,7 +145,8 @@ exports.create = function(req, res) {
 
 			// Append the data to the file
 			let prefix = (data === '') ? '' : ',';
-			fs.appendFile(listeVideoPath, prefix + JSON.stringify(fileData), function(err) {
+			let key = '"' + fileData.filename + '":';
+			fs.appendFile(listeVideoPath, prefix + key + JSON.stringify(fileData), function(err) {
 				debug('===== start appendFile ====');
 				if (err) {
 					res.json({

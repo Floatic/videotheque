@@ -50,10 +50,7 @@ let HTTPDigest = function() {
         //console.log('Writing request 1');
         //        fs.writeFileSync('request.txt', util.inspect(res));
 
-        debug(res);
-
-
-        if(!res.caseless) {
+        if(!res || !res.caseless) {
             debug(util.inspect(res));
             throw new Error('Caseless is empty');
         }
@@ -135,6 +132,13 @@ let HTTPDigest = function() {
                         formData: formData
                     }, function(error, response, body) {
                         debug('======= End post request ========');
+
+                        if(error) {
+                            debug('digest error : %s', error.message);
+                            debug(util.inspect(error));
+                            throw error;
+                        }
+
                         callback(error, response, body);
                     });
                     // debug(util.inspect(postRequest));
@@ -164,9 +168,16 @@ let HTTPDigest = function() {
                         method: options.method
                     }, function(error, response, body) {
                         debug('======= End post request ========');
+
+                        if(error) {
+                            debug('digest error : %s', error.message);
+                            debug(util.inspect(error));
+                            throw error;
+                        }
+
                         callback(error, response, body);
                     });
-                    debug(util.inspect(postRequest));
+                    // debug(util.inspect(postRequest));
 
                     return postRequest;
                 }

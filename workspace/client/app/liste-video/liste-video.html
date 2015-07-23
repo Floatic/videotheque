@@ -20,12 +20,15 @@
                     <tr ng-repeat="video in listeVideo.videos| orderBy:predicate:reverse track by $index">
                         <td>{{$index + 1}}</td>
                         <td class="description">
-                            <h4>{{video.name}}</h4>
+                            <h4>{{video.title}}</h4>
                             <p>{{video.description}}</p>
                         </td>
                         <td><span class="glyphicon glyphicon-facetime-video" ng-show="video.usage == 'communication'" aria-label="{{video.usage}}" title="{{video.usage}}"></span><span class="glyphicon glyphicon-education" ng-show="video.usage == 'pedagogique'" aria-label="{{video.usage}}" title="{{video.usage}}"></span></td>
                         <td>{{video.filesize| Filesize}}</td>
-                        <td><span class="glyphicon glyphicon-time red" ng-show="$index % 3 == 0" aria-label="Téléchargement en cours" title="Téléchargement en cours"></span><span class="glyphicon glyphicon-ok green" ng-show="$index % 3 != 0" aria-label="En ligne" title="En ligne"></span></td>
+                        <td>
+                            <span class="glyphicon glyphicon-time red" ng-show="video.encoding_status != 'finished'" aria-label="Téléchargement en cours" title="Téléchargement en cours"></span>
+                            <span class="glyphicon glyphicon-ok green" ng-show="video.encoding_status == 'finished'" aria-label="En ligne" title="En ligne"></span>
+                        </td>
                         <td><button type="button" class="glyphicon glyphicon-eye-open" aria-label="Voir" title="Voir"></button> <button type="button" class="glyphicon glyphicon-edit" aria-label="Editer" title="Editer"> </button><button type="button" class="glyphicon glyphicon-trash" aria-label="Supprimer" title="Supprimer"></button></td>
                     </tr>
                 </tbody>
