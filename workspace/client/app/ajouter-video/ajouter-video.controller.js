@@ -12,8 +12,11 @@ angular.module('videothequeApp')
 
             // Uploader object
             var uploader = $scope.uploader = new FileUploader({
-                url: '/api/videos'
+                url: '/api/libcast'
             });
+
+            // Valid formats
+            var formats = ['mp4','avi','wmv','mpg/mpeg','mov','m4v','3gp','flv','asf'];
 
             //
             // Methods
@@ -21,7 +24,7 @@ angular.module('videothequeApp')
 
             // Add button event
             $scope.upload = function () {
-                console.log('click');
+                // console.log('click');
                 setTimeout(function () {
                     angular.element('#upload').trigger('click');
                 }, 0);
@@ -34,8 +37,9 @@ angular.module('videothequeApp')
             uploader.filters.push({
                 name: 'fileType',
                 fn: function (item) {
-                    var itemType = item.type;
-                    return (itemType.indexOf('video') != -1) ? true : false;
+                    var itemType = _.words(item.type, /[^/ ]+/g);
+
+                    return (_.indexOf(formats, itemType[1]) != -1) ? true : false;
                 }
             });
 
@@ -47,7 +51,7 @@ angular.module('videothequeApp')
 //                console.info('onWhenAddingFileFailed', item, filter, options);
 
                 // Upload refused
-                dialogs.error(undefined, 'Ajout du fichier impossible');
+                dialogs.error(undefined, 'Ajout du fichier impossible. Formats acceptés : ' + _(formats).toString());
             };
             uploader.onAfterAddingFile = function (fileItem) {
 //                console.info('onAfterAddingFile', fileItem);
@@ -84,7 +88,7 @@ angular.module('videothequeApp')
 //                console.info('onSuccessItem', fileItem, response, status, headers);
 
                 // Success message
-                dialogs.notify('Téléchargement terminé', 'Votre fichier est en ligne !');
+                dialogs.notify('Téléchargement terminé', 'Votre fichier a correctement été téléchargé sur notre serveur. <br>Le téléchargement sur le serveur Libcast est en cours. <br>Veuillez vous rendre sur la <a href="/liste-video" ng-click="close()">liste des vidéos</a> pour suivre l\'état d\'avancement de votre vidéo');
             };
             uploader.onErrorItem = function (fileItem, response, status, headers) {
 //                console.info('onErrorItem', fileItem, response, status, headers);
@@ -115,7 +119,7 @@ angular.module('videothequeApp')
             //
 
             $scope.video = {
-                name: '',
+                title: '',
                 description: '',
                 usage: '',
                 usagerights: ''

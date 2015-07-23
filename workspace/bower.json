@@ -14,7 +14,7 @@
     "angular-bootstrap": "~0.13.*",
     "angular-file-upload": "~1.1.5",
     "font-awesome": ">=4.3.0",
-    "lodash": "~2.4.1",
+    "lodash": "~3.10.0",
     "angular-ui-router": "~0.2.15",
     "angular-dialog-service": "~5.2.8"
   },
