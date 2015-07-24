@@ -7,12 +7,18 @@
 
         <p>Sed eu nisl dictum, euismod quam sit amet, varius enim. Suspendisse euismod mattis erat ac aliquam. Aenean rutrum nibh maximus dui viverra, sed vulputate dolor facilisis. Aliquam tincidunt neque eros, nec laoreet elit elementum nec. Nulla malesuada ligula metus, vitae mollis tortor rhoncus non. Aenean ac mattis leo. Pellentesque sed ornare eros. Aenean tempus leo eget justo varius semper. Proin non nibh libero. Etiam quis viverra leo, ut tempor nulla. Nulla facilisi. Duis gravida tortor libero, in egestas augue elementum sed. </p>
 
+
+        <p>
+            predicate : {{predicate}}
+            reverse : {{reverse}}
+        </p>
+
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
                         <th ng-repeat="column in listeVideo.columns" style="{{column.style}}">
-                            <a href="#" ng-click="order(column.field)" ng-show="column.sortable">{{column.label}}</a> {{(column.sortable) ? '' : column.label}} <span ng-show="!reverse && column.sortable" class="glyphicon glyphicon-triangle-top"></span><span ng-show="predicate == column.field && reverse && column.sortable" class="glyphicon glyphicon-triangle-bottom"></span>
+                            <a href="#" ng-click="order(column.field)" ng-show="column.sortable">{{column.label}}</a> {{(column.sortable) ? '' : column.label}} <span ng-show="predicate == column.field && !reverse && column.sortable" class="glyphicon glyphicon-triangle-top"></span><span ng-show="predicate == column.field && reverse && column.sortable" class="glyphicon glyphicon-triangle-bottom"></span>
                         </th>
                     </tr>
                 </thead>

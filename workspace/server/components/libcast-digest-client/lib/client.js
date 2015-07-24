@@ -146,7 +146,7 @@ let Client = function() {
         debug('----- options -------');
         debug(options);
 
-        return new Promise((resolve, reject) => {
+        return new Promise(function(resolve, reject) {
             debug('======= PROMISE START ========');
             self.digest.request(self._setRequestParams(options), function(error, response, body) {
                 if (error) {
@@ -201,7 +201,7 @@ let Client = function() {
         };
 
         // Set a promise to be handled
-        return new Promise((resolve, reject) => {
+        return new Promise(function(resolve, reject) {
             debug('======= START GET FILES LIST ========');
             self.digest.request(self._setRequestParams(options), function(error, response, body) {
                 if (error) {
@@ -313,8 +313,8 @@ let Client = function() {
             parsed = result;
         });
 
-        // return this._cleanResponse(parsed);
-        return parsed;
+        return this._cleanResponse(parsed);
+        // return parsed;
     };
 
     //
@@ -322,23 +322,91 @@ let Client = function() {
     //
     // Returns a json object
     //
+    // code from http://stackoverflow.com/questions/20238493/xml2js-how-is-the-output
     //
-/*    Client.prototype._cleanResponse = function cleanResponse(res) {
-        if(_.size(res) > 1) {
-            _.forEach(res, function (value, key) {
-                this._cleanResponse(value);
-            });
-        } else if(typeof res === Array && _.size(res) === 1) {
-            res = res[0]; // If the entry is an array wit just 1 element, clean it
-        } else {
-            return res;
+
+    Client.prototype._cleanResponse = function cleanResponse(xml) {
+        let keys = Object.keys(xml),
+            o = 0, k = keys.length,
+            node, value, singulars,
+            l = -1,
+            i = -1,
+            s = -1,
+            e = -1,
+            isInt = /^-?\s*\d+$/,
+            isDig = /^(-?\s*\d*\.?\d*)$/,
+            radix = 10;
+
+        for (; o < k; ++o) {
+            node = keys[o];
+
+            if (xml[node] instanceof Array && xml[node].length === 1) {
+                xml[node] = xml[node][0];
+            }
+
+            if (xml[node] instanceof Object) {
+                value = Object.keys(xml[node]);
+
+                if (value.length === 1) {
+                    l = node.length;
+
+                    singulars = [
+                        node.substring(0, l - 1),
+                        node.substring(0, l - 3) + 'y'
+                    ];
+
+                    i = singulars.indexOf(value[0]);
+
+                    if (i !== -1) {
+                        xml[node] = xml[node][singulars[i]];
+                    }
+                }
+            }
+
+            if (typeof(xml[node]) === 'object') {
+                xml[node] = this._cleanResponse(xml[node]);
+            }
+
+            if (typeof(xml[node]) === 'string') {
+                value = xml[node].trim();
+
+                if (value.match(isDig)) {
+                    if (value.match(isInt)) {
+                        if (Math.abs(parseInt(value, radix)) <= Number.MAX_SAFE_INTEGER) {
+                            xml[node] = parseInt(value, radix);
+                        }
+                    } else {
+                        l = value.length;
+
+                        if (l <= 15) {
+                            xml[node] = parseFloat(value);
+                        } else {
+                            for (i = 0, s = -1, e = -1; i < l && e - s <= 15; ++i) {
+                                if (value.charAt(i) > 0) {
+                                    if (s === -1) {
+                                        s = i;
+                                    } else {
+                                        e = i;
+                                    }
+                                }
+                            }
+
+                            if (e - s <= 15) {
+                                xml[node] = parseFloat(value);
+                            }
+                        }
+                    }
+                }
+            }
         }
+
+        return xml;
     };
-*/
+
     return Client;
 }();
 
-module.exports = (username, password) => {
+module.exports = function(username, password) {
     debug('client load');
     return new Client(username, password);
 };

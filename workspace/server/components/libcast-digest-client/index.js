@@ -7,6 +7,8 @@
 // by digest authentication.
 //
 
-module.exports = require('./lib/client')('guillaume.burguiere@oatic.fr', '3NEgF7THxtBKMwRm2SqmpvLSI0ff3y6v');
+module.exports = function(username, password) {
+	require('./lib/client')(username, password);
+}
 
 // module.exports = require('test');

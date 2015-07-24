@@ -34,15 +34,15 @@ module.exports = function(app) {
     app.use(multer({
         dest: config.root + '/server/uploads/',
         rename: function(fieldname, filename) {
-            return moment().format('YYYY-MM-DD_HH-mm-ss_') + filename.replace(/\W+/g, '-').toLowerCase()
+            return moment().format('YYYY-MM-DD_HH-mm-ss_') + filename.replace(/\W+/g, '-').toLowerCase();
         }
-    }))
-/*    app.use(session({
-        // genid: function(req) {
-        //   return genuuid() // use UUIDs for session IDs
-        // },
-        secret: 'keyboard cat'
-    }));*/
+    }));
+    /*    app.use(session({
+            // genid: function(req) {
+            //   return genuuid() // use UUIDs for session IDs
+            // },
+            secret: 'keyboard cat'
+        }));*/
 
     if ('production' === env) {
         app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));

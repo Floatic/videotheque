@@ -16,7 +16,7 @@ angular.module('videothequeApp')
             });
 
             // Valid formats
-            var formats = ['mp4','avi','wmv','mpg/mpeg','mov','m4v','3gp','flv','asf'];
+            var formats = ['mp4','avi','wmv','mpg/mpeg','mov','m4v','3gp','flv','asf','quicktime'];
 
             //
             // Methods
@@ -88,7 +88,7 @@ angular.module('videothequeApp')
 //                console.info('onSuccessItem', fileItem, response, status, headers);
 
                 // Success message
-                dialogs.notify('Téléchargement terminé', 'Votre fichier a correctement été téléchargé sur notre serveur. <br>Le téléchargement sur le serveur Libcast est en cours. <br>Veuillez vous rendre sur la <a href="/liste-video" ng-click="close()">liste des vidéos</a> pour suivre l\'état d\'avancement de votre vidéo');
+                dialogs.notify('Téléchargement terminé', 'Votre fichier a correctement été téléchargé sur notre serveur. <br>Le téléchargement sur le serveur Libcast est en cours. <br>Veuillez vous rendre sur la liste des vidéos pour suivre l\'état d\'avancement de votre vidéo');
             };
             uploader.onErrorItem = function (fileItem, response, status, headers) {
 //                console.info('onErrorItem', fileItem, response, status, headers);

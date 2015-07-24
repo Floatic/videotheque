@@ -7,6 +7,7 @@ angular.module('videothequeApp')
             // Variables
             //
 
+            // Column details
             $scope.listeVideo = {
                 columns: [
                     {
@@ -40,6 +41,7 @@ angular.module('videothequeApp')
                 ]
             };
 
+            // Load video list
             $http.get('/api/libcast/list-videos').success(function (liste) {
                 // var videoListe = JSON.parse(liste);
 //                console.log(liste[0]);
@@ -50,13 +52,15 @@ angular.module('videothequeApp')
                 $scope.listeVideo.videos = liste;
             });
 
-            $scope.predicate = 'title';
-            $scope.reverse = false;
+            // Column sorting defaults
+            // $scope.predicate = 'title';
+            // $scope.reverse = false;
 
             //
             // Methods
             //
 
+            // Sort columns
             $scope.order = function(predicate) {
               $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
               $scope.predicate = predicate;

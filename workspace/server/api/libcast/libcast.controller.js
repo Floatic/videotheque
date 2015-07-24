@@ -4,8 +4,10 @@ let _ = require('lodash');
 let fs = require('fs');
 let util = require('util');
 let debug = require('debug')('libcastcontroller');
-let client = require('server/components/libcast-digest-client');
-let listeVideoPath = 'server/components/data/videos.txt';
+let client = require('server/components/libcast-digest-client')('guillaume.burguiere@oatic.fr', '3NEgF7THxtBKMwRm2SqmpvLSI0ff3y6v');
+let Levelup = require('server/components/local-db/levelup');
+let db = new Levelup('guillaume.burguiere@oatic.fr');
+// let listeVideoPath = 'server/components/data/videos.txt';
 let filePath = 'server/uploads/';
 
 //
@@ -55,12 +57,12 @@ exports.list = function(req, res) {
 			_.forEach(data.files.file, function(file, index) {
 				// for(let file of data) {
 
-				// debug(util.inspect(file));
+				debug(util.inspect(file));
 
 				if (file.slug[0] !== undefined && file.type[0] === 'video') {
 					// debug('========== FOUND FILE ==========');
 					// Clean file
-					_.forEach(file, function(prop, index) {
+					/*_.forEach(file, function(prop, index) {
 						// debug('prop');
 						// debug(prop);
 						// debug('index : %s', index);
@@ -69,7 +71,7 @@ exports.list = function(req, res) {
 						if(prop instanceof Array && _.size(prop) === 1) {
 							file[index] = prop[0];
 						}
-					});
+					});*/
 
 					// debug(file);
 
@@ -82,31 +84,33 @@ exports.list = function(req, res) {
 
 			// Get the data from our video.txt and merge them with those from libcast
 			debug('========== SETUP VIDEOLIST ==========');
-		    fs.readFile(listeVideoPath, function(err, data) {
-		        if (err) {
-		        	debug('error : %s', err.message);
-		            res.json({
-		                'success': false
-		            });
-		            throw err;
-		        }
 
-		        // Prepare file data
-		        let videoList = JSON.parse('{' + _.trimLeft(data, ',') + '}');
+			db.export().then(function(videoList) {
+				// fs.readFile(listeVideoPath, function(err, data) {
+				/*if (err) {
+					debug('error : %s', err.message);
+				    res.json({
+				        'success': false
+				    });
+				    throw err;
+				}*/
 
-		        // Merge the data
-		        videoList = _.merge({}, videoList, fileList);
+				// Prepare file data
+				// let videoList = JSON.parse('{' + _.trimLeft(data, ',') + '}');
 
-		        // Remove videos without data
-		        let finalList = {};
-		        _.forEach(videoList, function(video, fileName) {
-		        	if(video.title !== undefined) {
-		        		finalList[fileName] = video;
-		        	}
-		        });
+				// Merge the data
+				videoList = _.merge({}, videoList, fileList);
+
+				// Remove videos without data
+				let finalList = {};
+				_.forEach(videoList, function(video, fileName) {
+					if (video.title !== undefined) {
+						finalList[fileName] = video;
+					}
+				});
 
 				res.json(finalList);
-		    });
+			});
 		})
 		.catch(function(error) {
 			debug(error);
@@ -133,8 +137,9 @@ exports.create = function(req, res) {
 		debug(fileData);
 
 		// We want to save the video data in a video.txt file
-		fs.readFile(listeVideoPath, function(err, data) {
-			debug('===== start readfile ====');
+		db.add(fileData.filename, fileData, function(err) {
+			// fs.readFile(listeVideoPath, function(err, data) {
+			/*debug('===== start readfile ====');
 			if (err) {
 				debug('readFile error : %s', err.message);
 				res.json({
@@ -147,19 +152,19 @@ exports.create = function(req, res) {
 			let prefix = (data === '') ? '' : ',';
 			let key = '"' + fileData.filename + '":';
 			fs.appendFile(listeVideoPath, prefix + key + JSON.stringify(fileData), function(err) {
-				debug('===== start appendFile ====');
-				if (err) {
-					res.json({
-						'success': false
-					});
-					throw err;
-				}
+				debug('===== start appendFile ====');*/
+			if (err) {
+				debug('data save error : %s', err.message);
 
-				res.json({
-					'success': true
-				});
-			});
+				res.send(false);
+				throw err;
+			}
+
+			debug('======= DATA SAVED ========');
+
+			res.send(true);
 		});
+		// });
 
 		// Setup video
 		let video = client.loadVideo(fileData);
