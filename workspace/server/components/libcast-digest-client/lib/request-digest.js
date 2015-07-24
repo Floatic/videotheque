@@ -195,7 +195,7 @@ let HTTPDigest = function() {
     //
     HTTPDigest.prototype._omitNull = function omitNull(data) {
         return _.omit(data, function(elt) {
-            return elt == null;
+            return elt === null;
         });
     };
 
