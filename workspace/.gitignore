@@ -6,14 +6,7 @@ public
 client/bower_components
 dist
 /server/config/local.env.js
-<<<<<<< HEAD
-server/uploads
-nbproject
-*.sublime-workspace
-*.sublime-project
-=======
 /server/uploads
 nbproject
-*.sublime-project
 *.sublime-workspace
->>>>>>> 449e859efec45432cf26deb2ea1331e5997f1f3d
+*.sublime-project
