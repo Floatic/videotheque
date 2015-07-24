@@ -1,0 +1,28 @@
+// Table styles
+
+.liste-video {
+    thead,
+    tbody,
+    tfoot {
+        > tr {
+            > th,
+            > td {
+                vertical-align: middle;
+                text-align: center;
+            }
+        }
+    }
+
+    .description {
+        text-align: left;
+        font-style: justify;
+    }
+
+    .red {
+        color: $custom_color_red;
+    }
+
+    .green {
+        color: $custom_color_green;
+    }
+}

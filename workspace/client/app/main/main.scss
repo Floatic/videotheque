@@ -1,5 +1,11 @@
-.thing-form {
-    margin: 20px 0;
+// Jumbotron
+
+.jumbotron {
+    text-align: center;
+
+    > * {
+        display: inline-block;
+    }
 }
 
 #banner {
@@ -14,13 +20,50 @@
 }
 
 .hero-unit {
+    background: $custom_color_blue;
+    color: #F5F5F5;
+    height: 300px;
     position: relative;
     padding: 30px 15px;
-    color: #F5F5F5;
     text-align: center;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-    background: #4393B9;
 }
+
+
+// Highlights
+
+.highlight {
+    div[class ^= "col-"] {
+        background-color: #FFFFFF;
+        height: 280px;
+        margin: -40px - $jumbotron-padding 20px 0 0;
+        padding: 20px;
+        position: relative;
+        width: 335px;
+    }
+
+    h2 {
+        color: $custom_color_title;
+        font-size: $font-size-h4;
+        height: 50px;
+        text-transform: uppercase;
+    }
+
+    li {
+        color: $custom_color_pink;
+        margin: 0 0 10px 0;
+    }
+
+    .btn {
+        border-radius: $btn-border-radius-large;
+        bottom: 20px;
+        left: 20px;
+        position: absolute;
+    }
+}
+
+
+// Footer
 
 .footer {
     text-align: center;

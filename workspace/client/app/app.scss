@@ -1,7 +1,9 @@
-$icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
+$icon-font-path: "/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 $fa-font-path: "/bower_components/font-awesome/fonts";
 
-@import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
+@import 'variables';
+@import 'customVariables';
+@import 'bootstrap-sass-official/assets/stylesheets/bootstrap';
 @import 'font-awesome/scss/font-awesome';
 
 /**
@@ -15,17 +17,13 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
     padding: 0.2em 0;
 }
 
-// Nav
-.navbar-header {
-    img {
-        height: 100%;
-    }
-}
-
 // Component styles are injected through grunt
 // injector
 @import 'ajouter-video/ajouter-video.scss';
+@import 'libcast-examples/libcast-examples.scss';
 @import 'liste-video/liste-video.scss';
 @import 'main/main.scss';
+@import 'header/header.scss';
 @import 'modal/modal.scss';
+@import 'navbar/navbar.scss';
 // endinjector

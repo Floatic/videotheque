@@ -1,38 +1,102 @@
 'use strict';
 
 angular.module('videothequeApp')
-        .controller('ListeVideoCtrl', function ($scope) {
-            $scope.liste_video = {
-                columns : ['Id', 'Titre', 'Usage', 'Taille', 'Etat'],
-                videos : [
+        .controller('ListeVideoCtrl', function ($scope, $http) {
+
+            //
+            // Variables
+            //
+
+            $scope.listeVideo = {
+                columns: [
                     {
-                        'id' : 1,
-                        'title' : 'Le geste du maçon',
-                        'use' : 'Pédagogique',
-                        'size' : '1go',
-                        'status' : 'En ligne',
+                        label: 'Id',
+                        field: ''
                     },
                     {
-                        'id' : 2,
-                        'title' : 'L\'accueil du stagiaire à l\'AFPA',
-                        'use' : 'Communication',
-                        'size' : '2go',
-                        'status' : 'En ligne',
+                        label: 'Description',
+                        field: 'title',
+                        sortable: true,
+                        style: 'width: 60%; text-align: left;'
                     },
                     {
-                        'id' : 3,
-                        'title' : 'L\'usage du fil à plomb',
-                        'use' : 'Pédagogique',
-                        'size' : '500mo',
-                        'status' : 'Téléchargement en cours',
+                        label: 'Usage',
+                        field: 'usage',
+                        sortable: true
                     },
                     {
-                        'id' : 4,
-                        'title' : 'PUMA arrive sur vos écrans',
-                        'use' : 'Communication',
-                        'size' : '13go',
-                        'status' : 'En ligne',
+                        label: 'Taille',
+                        field: 'filesize',
+                        sortable: true
                     },
+                    {
+                        label: 'Etat',
+                        field: ''
+                    },
+                    {
+                        label: '',
+                        field: ''
+                    }
                 ]
             };
+
+            $http.get('/api/libcast/list-videos').success(function (liste) {
+                // var videoListe = JSON.parse(liste);
+//                console.log(liste[0]);
+//                console.log(videoListe[0]);
+//                console.log(typeof liste);
+//                console.log(typeof angular.toJson(liste));
+
+                $scope.listeVideo.videos = liste;
+            });
+
+            $scope.predicate = 'title';
+            $scope.reverse = false;
+
+            //
+            // Methods
+            //
+
+            $scope.order = function(predicate) {
+              $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+              $scope.predicate = predicate;
+            };
+        })
+        .filter('Filesize', function () {
+            //
+            // Filter for human display of file size
+            //
+
+            return function (size) {
+                if (isNaN(size)) {
+                    size = parseInt(size);
+                }
+
+                if (size < 1024) {
+                    return size + ' O';
+                }
+
+                size /= 1024;
+
+                if (size < 1024) {
+                    return Math.round(size) + ' Ko';
+                }
+
+                size /= 1024;
+
+                if (size < 1024) {
+                    return size.toFixed(2) + ' Mo';
+                }
+
+                size /= 1024;
+
+                if (size < 1024) {
+                    return size.toFixed(2) + ' Go';
+                }
+
+                size /= 1024;
+
+                return size.toFixed(2) + ' To';
+            };
         });
+
