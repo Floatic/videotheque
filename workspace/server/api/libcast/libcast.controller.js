@@ -173,7 +173,9 @@ exports.create = function(req, res) {
 		// Send the video to libcast
 		debug('------- load client upload -------');
 		debug('Video path : %s', videoPath);
-		client.upload(videoPath, video);
+		client.upload(videoPath, video).then(function(res){
+			// add slug in db
+		});
 	}
 };
 

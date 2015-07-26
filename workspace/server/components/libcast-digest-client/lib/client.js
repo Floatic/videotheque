@@ -53,74 +53,78 @@ let Client = function() {
         debug('======= UPLOAD ========');
         debug('instance of video : %s', video instanceof Video);
 
-        let self = this;
-        let options = {
-            method: 'POST',
-            path: path_all_files,
-            file: file
-        };
-
-        // Create the file
-        debug('======= START SEND FILE ========');
-        self.digest.request(self._setRequestParams(options), function(error, response, body) {
-            if (error) {
-                debug('digest error : %s', error.message);
-                debug(util.inspect(error));
-                throw error;
-            }
-
-            // let Video = require('./entity/video')(stream, slug);
-            // debug('Http code : ' + response.statusCode);
-
-            if (response.statusCode !== 201) {
-                debug('error response code %s', response.statusCode);
-                return;
-            }
-
-            // debug('Http response : ');
-            // debug(response);
-            // debug('Http body : ');
-            // debug(body);
-            // debug('Writing request 2');
-            // fs.writeFileSync('request2.txt', util.inspect(response));
-
-            let fileInfo = self._formatResponse(body).file;
-
-            debug(fileInfo);
-
-            // Create a publication
-            if (!fileInfo.slug) {
-                debug('No slug');
-                return;
-            }
-
-            options = {
+        return new Promise(function(resolve, reject) {
+            let self = this;
+            let options = {
                 method: 'POST',
-                form: {
-                    file: fileInfo.slug[0],
-                    title: video.title,
-                    // subtitle: '',
-                    // published_at: moment().format() + '+01:00',
-                    visibility: (video.usage === 'communication') ? 'visible' : 'hidden'
-                },
-                path: self._setRequestUrl(path_add_resource, {
-                    'stream': (video.usage === 'communication') ? 'communication-1' : 'pedagogique'
-                })
+                path: path_all_files,
+                file: file
             };
 
-            debug('======= START SEND PUBLICATION ========');
+            // Create the file
+            debug('======= START SEND FILE ========');
             self.digest.request(self._setRequestParams(options), function(error, response, body) {
                 if (error) {
                     debug('digest error : %s', error.message);
+                    debug(util.inspect(error));
                     throw error;
                 }
+
+                // let Video = require('./entity/video')(stream, slug);
+                // debug('Http code : ' + response.statusCode);
 
                 if (response.statusCode !== 201) {
                     debug('error response code %s', response.statusCode);
                     return;
                 }
 
-                debug('======= PUBLICATION CREATED ========');
+                // debug('Http response : ');
+                // debug(response);
+                // debug('Http body : ');
+                // debug(body);
+                // debug('Writing request 2');
+                // fs.writeFileSync('request2.txt', util.inspect(response));
+
+                let fileInfo = self._parseResponse(body).file;
+
+                debug(fileInfo);
+
+                // Create a publication
+                if (!fileInfo.slug) {
+                    debug('No slug');
+                    return;
+                }
+
+                options = {
+                    method: 'POST',
+                    form: {
+                        file: fileInfo.slug[0],
+                        title: video.title,
+                        // subtitle: '',
+                        // published_at: moment().format() + '+01:00',
+                        visibility: (video.usage === 'communication') ? 'visible' : 'hidden'
+                    },
+                    path: self._setRequestUrl(path_add_resource, {
+                        'stream': (video.usage === 'communication') ? 'communication-1' : 'pedagogique'
+                    })
+                };
+
+                debug('======= START SEND PUBLICATION ========');
+                self.digest.request(self._setRequestParams(options), function(error, response, body) {
+                    if (error) {
+                        debug('digest error : %s', error.message);
+                        throw error;
+                    }
+
+                    if (response.statusCode !== 201) {
+                        debug('error response code %s', response.statusCode);
+                        return;
+                    }
+
+                    resolve(self._parseResponse(body));
+
+                    debug('======= PUBLICATION CREATED ========');
+                });
             });
         });
 
@@ -169,7 +173,7 @@ let Client = function() {
                 // debug('Writing request 2');
                 // fs.writeFileSync('request2.txt', util.inspect(response));
                 debug('before resolve');
-                resolve(self._formatResponse(body));
+                resolve(self._parseResponse(body));
                 debug('after resolve');
                 return true;
             });
@@ -216,7 +220,7 @@ let Client = function() {
                 }
 
                 debug('Trigger resolve');
-                resolve(self._formatResponse(body));
+                resolve(self._parseResponse(body));
 
                 return true;
             });
@@ -306,7 +310,7 @@ let Client = function() {
     //
     //
 
-    Client.prototype._formatResponse = function formatResponse(res) {
+    Client.prototype._parseResponse = function parseResponse(res) {
         let parsed;
 
         parseXml(res, function(err, result) {
@@ -327,7 +331,8 @@ let Client = function() {
 
     Client.prototype._cleanResponse = function cleanResponse(xml) {
         let keys = Object.keys(xml),
-            o = 0, k = keys.length,
+            o = 0,
+            k = keys.length,
             node, value, singulars,
             l = -1,
             i = -1,
