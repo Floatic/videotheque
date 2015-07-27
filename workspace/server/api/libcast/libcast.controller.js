@@ -45,6 +45,8 @@ exports.index = function(req, res) {
 //
 
 exports.list = function(req, res) {
+
+debug('client : %s', util.inspect(client));
 	client.getFiles()
 		.then(function(data) {
 			debug('Promise success');

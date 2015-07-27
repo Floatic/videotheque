@@ -10,11 +10,11 @@
 // DEBUG=libcastcontroller,requestdigest,client,video,levelup node --harmony server/app.js
 
 let debug = require('debug')('client');
+let util = require('util');
 
 let Client = function() {
     // Load needed modules
-    let fs = require('fs');
-    let util = require('util');
+    // let fs = require('fs');
     let parseXml = require('xml2js').parseString;
     let _ = require('lodash');
     let _string = require('underscore.string');
@@ -413,5 +413,7 @@ let Client = function() {
 
 module.exports = function(username, password) {
     debug('client load');
-    return new Client(username, password);
+    let test = new Client(username, password);
+    debug(util.inspect(test));
+    return test;
 };
