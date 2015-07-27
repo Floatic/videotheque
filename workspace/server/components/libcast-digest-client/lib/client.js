@@ -7,7 +7,7 @@
 // by digest authentication.
 //
 
-// DEBUG=libcastcontroller,requestdigest,client,video node --harmony server/app.js
+// DEBUG=libcastcontroller,requestdigest,client,video,levelup node --harmony server/app.js
 
 let debug = require('debug')('client');
 

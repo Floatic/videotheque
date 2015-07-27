@@ -14,12 +14,17 @@ let debug = require('debug')('levelup');
 let level = require('level');
 
 // Paths
-const path_data = './data/';
+const path_data = __dirname + '/data/';
 
 // Constructor
 function Levelup(id) {
 	this.db = level(path_data + id, {
 		valueEncoding: 'json'
+	}, function(err){
+		if(err) {
+			debug('Create db problem : %s', err.message);
+			throw err;
+		}
 	});
 }
 

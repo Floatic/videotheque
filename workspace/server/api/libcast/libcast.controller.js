@@ -161,8 +161,6 @@ exports.create = function(req, res) {
 			}
 
 			debug('======= DATA SAVED ========');
-
-			res.send(true);
 		});
 		// });
 
@@ -173,8 +171,21 @@ exports.create = function(req, res) {
 		// Send the video to libcast
 		debug('------- load client upload -------');
 		debug('Video path : %s', videoPath);
-		client.upload(videoPath, video).then(function(res){
-			// add slug in db
+		client.upload(videoPath, video).then(function(res) {
+			// Add slug in db when upload complete
+			fileData.slug = res.slug;
+			db.add(fileData.filename, fileData, function(err) {
+				if (err) {
+					debug('slug save error : %s', err.message);
+
+					res.send(false);
+					throw err;
+				}
+
+				debug('======= SLUG SAVED ========');
+
+				res.send(true);
+			});
 		});
 	}
 };
