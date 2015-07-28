@@ -9,10 +9,10 @@ var errors = require('./components/errors');
 module.exports = function(app) {
 
   // Insert routes below
-  app.use('/api/libcast', require('./api/libcast'));
+  app.use('/api/videotheque', require('./api/videotheque'));
   app.use('/api/videos', require('./api/video'));
   app.use('/api/things', require('./api/thing'));
-  
+
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
    .get(errors[404]);

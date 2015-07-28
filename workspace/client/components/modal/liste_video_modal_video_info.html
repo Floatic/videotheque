@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <h4 class="modal-title">
+        <span class="glyphicon glyphicon-star"></span> {{video.title}}
+    </h4>
+</div>
+<div class="modal-body">
+    <h3>Informations générales</h3>
+    <dl>
+        <dt>Titre</dt>
+        <dd>{{video.title}}</dd>
+        <dt>Description</dt>
+        <dd>{{video.description}}</dd>
+        <dt>Usage</dt>
+        <dd>{{video.usage}}</dd>
+        <dt>Droits d'usage</dt>
+        <dd>{{video.usagerights}}</dd>
+    </dl>
+    <h3>Liens</h3>
+    <dl>
+        <dt>Embed</dt>
+        <dd>
+            <pre select-text>{{video.widgets.widget._ | decodeURI}}</pre>
+        </dd>
+    </dl>
+    <h3>Détails</h3>
+
+<object width="640" height="360" type="application/x-shockwave-flash" data="https://video.mookitek.com/sfLibcastPlayerPlugin/flash/swf/player/Player.swf" style="visibility: visible;">  <param name="allowFullscreen" value="true">   <param name="quality" value="high">   <param name="allowScriptAccess" value="sameDomain">   <param name="movie" value="video.mookitek.com/sfLibcastPlayerPlugin/flash/swf/player/Player.swf">   <param name="flashvars" value="getnonce=https%3A%2F%2Fvideo.mookitek.com%2FsfLibcastPlayerPlugin%2Fflash%2Fxml%2Fgetnonce.xml&amp;authentication=https%3A%2F%2Fvideo.mookitek.com%2FsfLibcastPlayerPlugin%2Fflash%2Fswf%2Fplayer%2FAuthentication.swf&amp;message=You have no right to access this resource&amp;xmlpath=https%3A%2F%2Fvideo.mookitek.com%2Fplayer%2Ftest-10%2Fconfig.xml"> </object>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="close()">Fermer</button>
+</div>

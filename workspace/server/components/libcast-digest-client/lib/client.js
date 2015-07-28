@@ -20,8 +20,8 @@ let Client = function() {
     let _string = require('underscore.string');
     let moment = require('moment');
 
-    // Load Video object for reference
-    let Video = require('./entity/video');
+    // Application paths
+    const path_video = './lib/entity/video';
 
     // API paths
     const path_file = '/services/file/%(slug)s';
@@ -49,12 +49,11 @@ let Client = function() {
     //
 
     Client.prototype.upload = function(file, video) {
-
         debug('======= UPLOAD ========');
-        debug('instance of video : %s', video instanceof Video);
+
+        let self = this;
 
         return new Promise(function(resolve, reject) {
-            let self = this;
             let options = {
                 method: 'POST',
                 path: path_all_files,
@@ -63,11 +62,12 @@ let Client = function() {
 
             // Create the file
             debug('======= START SEND FILE ========');
-            self.digest.request(self._setRequestParams(options), function(error, response, body) {
-                if (error) {
-                    debug('digest error : %s', error.message);
-                    debug(util.inspect(error));
-                    throw error;
+            self.digest.request(self._setRequestParams(options), function(err, response, body) {
+                if (err) {
+                    debug('digest error : %s', err.message);
+                    debug(util.inspect(err));
+                    reject(err);
+                    return
                 }
 
                 // let Video = require('./entity/video')(stream, slug);
@@ -75,6 +75,7 @@ let Client = function() {
 
                 if (response.statusCode !== 201) {
                     debug('error response code %s', response.statusCode);
+                    reject('error response code : ' + response.statusCode);
                     return;
                 }
 
@@ -89,9 +90,12 @@ let Client = function() {
 
                 debug(fileInfo);
 
+                debug('======= FILE SENT ========');
+
                 // Create a publication
                 if (!fileInfo.slug) {
                     debug('No slug');
+                    reject('No slug');
                     return;
                 }
 
@@ -110,14 +114,16 @@ let Client = function() {
                 };
 
                 debug('======= START SEND PUBLICATION ========');
-                self.digest.request(self._setRequestParams(options), function(error, response, body) {
-                    if (error) {
-                        debug('digest error : %s', error.message);
-                        throw error;
+                self.digest.request(self._setRequestParams(options), function(err, response, body) {
+                    if (err) {
+                        debug('digest error : %s', err.message);
+                        reject(err);
+                        return;
                     }
 
                     if (response.statusCode !== 201) {
                         debug('error response code %s', response.statusCode);
+                        reject('error response code : ' + response.statusCode);
                         return;
                     }
 
@@ -152,10 +158,10 @@ let Client = function() {
 
         return new Promise(function(resolve, reject) {
             debug('======= PROMISE START ========');
-            self.digest.request(self._setRequestParams(options), function(error, response, body) {
-                if (error) {
-                    debug('digest error : %s', error.message);
-                    throw error;
+            self.digest.request(self._setRequestParams(options), function(err, response, body) {
+                if (err) {
+                    debug('digest error : %s', err.message);
+                    throw err;
                 }
 
                 // let Video = require('./entity/video')(stream, slug);
@@ -203,14 +209,15 @@ let Client = function() {
             method: 'GET',
             path: path_all_files
         };
-
+debug('============= BEFORE SELF DIGEST ==============');
+debug('SELF DIGEST : %s', typeof self.digest);
         // Set a promise to be handled
         return new Promise(function(resolve, reject) {
             debug('======= START GET FILES LIST ========');
-            self.digest.request(self._setRequestParams(options), function(error, response, body) {
-                if (error) {
-                    debug('digest error : %s', error.message);
-                    throw error;
+            self.digest.request(self._setRequestParams(options), function(err, response, body) {
+                if (err) {
+                    debug('digest error : %s', err.message);
+                    throw err;
                 }
 
                 if (response.statusCode !== 200) {
@@ -270,7 +277,7 @@ let Client = function() {
     //
 
     Client.prototype.loadVideo = function(data) {
-        return require('./entity/video')(data);
+        return require(path_video)(data);
     };
 
     //

@@ -35,7 +35,7 @@
                             <span class="glyphicon glyphicon-time red" ng-show="video.encoding_status != 'finished'" aria-label="Téléchargement en cours" title="Téléchargement en cours"></span>
                             <span class="glyphicon glyphicon-ok green" ng-show="video.encoding_status == 'finished'" aria-label="En ligne" title="En ligne"></span>
                         </td>
-                        <td><button type="button" class="glyphicon glyphicon-eye-open" aria-label="Voir" title="Voir"></button> <button type="button" class="glyphicon glyphicon-edit" aria-label="Editer" title="Editer"> </button><button type="button" class="glyphicon glyphicon-trash" aria-label="Supprimer" title="Supprimer"></button></td>
+                        <td><button type="button" class="glyphicon glyphicon-eye-open" aria-label="Voir" title="Voir" ng-show="video.slug!=''" ng-click="displayInfo(video.slug)"></button> <button type="button" class="glyphicon glyphicon-edit" aria-label="Editer" title="Editer" ng-show="video.slug!=''"> </button><button type="button" class="glyphicon glyphicon-trash" aria-label="Supprimer" title="Supprimer" ng-show="video.slug!=''"></button></td>
                     </tr>
                 </tbody>
 
@@ -43,3 +43,6 @@
         </div>
     </div>
 </div>
+<script type="text/ng-template" id="modal_video_info.html">
+    <div ng-include="'components/modal/liste_video_modal_video_info.html'"></div>
+</script>
