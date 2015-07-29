@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('videothequeApp')
-  .controller('MainCtrl', function ($scope, $http) {
+  .controller('HomeCtrl', function ($scope, $http) {
 //    $scope.awesomeThings = [];
 //
 //    $http.get('/api/things').success(function(awesomeThings) {

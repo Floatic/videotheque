@@ -19,8 +19,9 @@ let LevelHUD = require('levelhud');
 const path_data = __dirname + '/data/';
 
 // Constructor
-function Levelup(id) {
+function Levelup(id, port) {
 	debug('Load db : %s', path_data + id);
+
 	this.db = level(path_data + id, {
 		valueEncoding: 'json'
 	}, function(err) {
@@ -29,11 +30,11 @@ function Levelup(id) {
 			throw err;
 		}
 
-		debug('--------- db loaded ----------');
+		debug('--------- db %s loaded ----------', id);
 	});
 
 	// Load hud
-	new LevelHUD().use(this.db).listen(3000);
+	new LevelHUD().use(this.db).listen(port);
 }
 
 //
@@ -44,7 +45,7 @@ function Levelup(id) {
 //
 
 Levelup.prototype.add = function(key, data, callback) {
-	debug('======= ADD DATA ========');
+	debug('======= ADD DATA : %s ========', key);
 
 	this.db.put(key, data, function(err) {
 		callback(err);

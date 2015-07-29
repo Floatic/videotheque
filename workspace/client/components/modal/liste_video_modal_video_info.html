@@ -3,28 +3,67 @@
         <span class="glyphicon glyphicon-star"></span> {{video.title}}
     </h4>
 </div>
-<div class="modal-body">
-    <h3>Informations générales</h3>
-    <dl>
-        <dt>Titre</dt>
-        <dd>{{video.title}}</dd>
-        <dt>Description</dt>
-        <dd>{{video.description}}</dd>
-        <dt>Usage</dt>
-        <dd>{{video.usage}}</dd>
-        <dt>Droits d'usage</dt>
-        <dd>{{video.usagerights}}</dd>
-    </dl>
-    <h3>Liens</h3>
-    <dl>
-        <dt>Embed</dt>
-        <dd>
-            <pre select-text>{{video.widgets.widget._ | decodeURI}}</pre>
-        </dd>
-    </dl>
-    <h3>Détails</h3>
-
-<object width="640" height="360" type="application/x-shockwave-flash" data="https://video.mookitek.com/sfLibcastPlayerPlugin/flash/swf/player/Player.swf" style="visibility: visible;">  <param name="allowFullscreen" value="true">   <param name="quality" value="high">   <param name="allowScriptAccess" value="sameDomain">   <param name="movie" value="video.mookitek.com/sfLibcastPlayerPlugin/flash/swf/player/Player.swf">   <param name="flashvars" value="getnonce=https%3A%2F%2Fvideo.mookitek.com%2FsfLibcastPlayerPlugin%2Fflash%2Fxml%2Fgetnonce.xml&amp;authentication=https%3A%2F%2Fvideo.mookitek.com%2FsfLibcastPlayerPlugin%2Fflash%2Fswf%2Fplayer%2FAuthentication.swf&amp;message=You have no right to access this resource&amp;xmlpath=https%3A%2F%2Fvideo.mookitek.com%2Fplayer%2Ftest-10%2Fconfig.xml"> </object>
+<div class="modal-body container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Informations générales</h3>
+            <dl>
+                <dt>Titre</dt>
+                <dd>{{video.title}}</dd>
+                <dt>Description</dt>
+                <dd>{{video.description}}</dd>
+                <dt>Durée</dt>
+                <dd>{{video.duration}} secondes</dd>
+            </dl>
+        </div>
+        <div class="col-md-6">
+            <h3>Apercu</h3>
+            <div ng-bind-html="videoPreview"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Liens</h3>
+            <dl>
+                <dt>Embed</dt>
+                <dd>
+                    <pre select-text>{{video.widgets.widget._}}</pre>
+                </dd>
+                <dt>Flavors</dt>
+                <dd class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th ng-repeat="flavor in video.flavors">
+                                    {{flavor.$.name}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td ng-repeat="flavor in video.flavors">
+                                    <code select-text>{{flavor._}}</code>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Détails</h3>
+            <dl>
+                <dt>Format</dt>
+                <dd>mp4</dd>
+                <dt>Usage</dt>
+                <dd>{{video.usage}}</dd>
+                <dt>Droits d'usage</dt>
+                <dd>{{video.usagerights}}</dd>
+            </dl>
+        </div>
+    </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" ng-click="close()">Fermer</button>

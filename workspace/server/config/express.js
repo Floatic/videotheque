@@ -13,9 +13,10 @@ var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var errorHandler = require('errorhandler');
 var path = require('path');
-var multer = require('multer');
-var moment = require('moment');
+// var multer = require('multer');
+// var moment = require('moment');
 // var session = require('express-session');
+// var sharedSession = require('express-socket.io-session');
 var config = require('./environment');
 
 module.exports = function(app) {
@@ -31,18 +32,20 @@ module.exports = function(app) {
     app.use(bodyParser.json());
     app.use(methodOverride());
     app.use(cookieParser());
-    app.use(multer({
+/*    app.use(multer({
         dest: config.root + '/server/uploads/',
         rename: function(fieldname, filename) {
             return moment().format('YYYY-MM-DD_HH-mm-ss_') + filename.replace(/\W+/g, '-').toLowerCase();
         }
-    }));
-    /*    app.use(session({
-            // genid: function(req) {
-            //   return genuuid() // use UUIDs for session IDs
-            // },
-            secret: 'keyboard cat'
-        }));*/
+    }));*/
+/*    app.use(session({
+        // genid: function(req) {
+        //   return genuuid() // use UUIDs for session IDs
+        // },
+        secret: 'keyboard cat',
+        resave: true,
+        saveUninitialized: true
+    }));*/
 
     if ('production' === env) {
         app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));

@@ -14,10 +14,9 @@ let util = require('util');
 let debug = require('debug')('libcastcontroller');
 let client = require('server/components/libcast-digest-client')('guillaume.burguiere@oatic.fr', '3NEgF7THxtBKMwRm2SqmpvLSI0ff3y6v');
 let Levelup = require('server/components/local-db/levelup');
-let db = new Levelup('guillaume.burguiere@oatic.fr');
+let db = new Levelup('guillaume.burguiere@oatic.fr', 3000);
 // let listeVideoPath = 'server/components/data/videos.txt';
 let filePath = 'server/uploads/';
-let Entities = require('html-entities').AllHtmlEntities;
 
 //
 // # Index
@@ -31,7 +30,6 @@ exports.index = function(req, res) {
 	debug('Client type : ', typeof client);
 
 	let slug = req.params.slug;
-	let entities = new Entities();
 
 	client.show(slug)
 		.then(function(data) {
@@ -76,7 +74,7 @@ function _parseEmbed(embed) {
 
 	// Remove +
 	let tmp = '';
-	_.forEach(embed, function(value, key){
+	_.forEach(embed, function(value, key) {
 		tmp += value.replace('+', ' ');
 	});
 
@@ -105,55 +103,43 @@ exports.list = function(req, res) {
 			debug('Promise success');
 			// debug(util.inspect(data));
 
-			// Set file list
-			debug('========== SETUP FILELIST ==========');
-
-			let fileList = {};
-
-			_.forEach(data.files.file, function(file, index) {
-				// for(let file of data) {
-
-				debug(util.inspect(file));
-
-				if (file.slug !== undefined && file.type === 'video') {
-					// Delete data we don't need to avoid overloads later
-					delete file.slug;
-
-					// Save file
-					fileList[file.name] = file;
-				}
-			});
-
-			debug(util.inspect(fileList));
-
 			// Get the data from our db and merge them with those from libcast
 			debug('========== SETUP VIDEOLIST ==========');
 
 			db.export().then(function(videoList) {
-				// fs.readFile(listeVideoPath, function(err, data) {
-				/*if (err) {
-					debug('error : %s', err.message);
-				    res.json({
-				        'success': false
-				    });
-				    throw err;
-				}*/
+				// Set file list
+				debug('========== SETUP FILELIST ==========');
 
-				// Prepare file data
-				// let videoList = JSON.parse('{' + _.trimLeft(data, ',') + '}');
+				let fileList = {};
 
-				// Merge the data
-				videoList = _.merge({}, videoList, fileList);
+				_.forEach(data.files.file, function(file, index) {
+					// for(let file of data) {
 
-				// Remove videos without data
-				let finalList = {};
-				_.forEach(videoList, function(video, fileName) {
-					if (video.title !== undefined) {
-						finalList[fileName] = video;
+					debug(util.inspect(file));
+
+					if (file.slug !== undefined && file.type === 'video') {
+						// Delete data we don't need to avoid overloads later
+						delete file.slug;
+
+						// Save file
+						fileList[file.name] = file;
 					}
 				});
 
-				res.json(finalList);
+				debug(util.inspect(fileList));
+
+
+				// Merge the data
+				_.forEach(videoList, function(video, key) {
+					debug(_.keys(fileList));
+					debug(_.indexOf(_.keys(fileList), video.filename));
+
+					if (_.indexOf(_.keys(fileList), video.filename) !== -1) {
+						videoList[key] = _.merge({}, video, fileList[video.filename]);
+					}
+				});
+
+				res.json(videoList);
 			});
 		})
 		.catch(function(error) {
@@ -175,12 +161,15 @@ function _cleanDb() {
 		let files = fs.readdirSync(filePath);
 		// debug(files);
 		// debug(videoList);
-		_.forEach(videoList, function(data, filename) {
-			// debug('== File : %s ==', filename);
-			if (_.indexOf(files, filename) === -1) {
-				debug('== DELETE : %s ==', filename);
-				db.delete(filename);
+		_.forEach(videoList, function(data, key) {
+			// debug('== File : %s ==', data.filename);
+			// debug('== index : %s ==', data.filename);
+
+			if (_.indexOf(files, data.filename) === -1) {
+				debug('== DELETE : %s ==', key);
+				db.delete(key);
 			}
+
 		});
 	});
 }
@@ -216,6 +205,7 @@ exports.create = function(req, res) {
 		});
 
 		// Setup video
+		// TODO : BANCAL
 		let video = client.loadVideo(fileData);
 		let videoPath = filePath + video.filename;
 
@@ -224,9 +214,17 @@ exports.create = function(req, res) {
 		debug('Video path : %s', videoPath);
 		client.upload(videoPath, video)
 			.then(function(uploaded) {
+				debug(util.inspect(uploaded));
+
+				if (!uploaded.resource.slug) {
+					res.status(500).send('No slug');
+					return;
+				}
+
 				// Add slug in db when upload complete
-				fileData.slug = uploaded.slug;
-				db.add(fileData.filename, fileData, function(err) {
+				fileData.slug = uploaded.resource.slug;
+				db.delete(fileData.filename);
+				db.add(uploaded.resource.slug, fileData, function(err) {
 					if (err) {
 						debug('slug save error : %s', err.message);
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('videothequeApp')
-        .controller('AjouterVideoCtrl', function ($scope, $rootScope, FileUploader, dialogs, $http, $filter) {
+        .controller('AjouterVideoCtrl', function ($scope, $rootScope, FileUploader, dialogs, $http, $filter, socket) {
             // ***************
             // Page controller
             //****************
@@ -12,7 +12,7 @@ angular.module('videothequeApp')
 
             // Uploader object
             var uploader = $scope.uploader = new FileUploader({
-                url: '/api/libcast'
+                url: '/api/videotheque/videos'
             });
 
             // Valid formats
@@ -21,7 +21,7 @@ angular.module('videothequeApp')
             //
             // Methods
             //
-
+                socket.emit('test', 'coucou');
             // Add button event
             $scope.upload = function () {
                 // console.log('click');

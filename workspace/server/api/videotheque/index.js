@@ -1,13 +1,22 @@
 'use strict';
 
-var express = require('express');
-var controller = require('./videotheque.controller');
+let express = require('express');
+let controller = require('./videotheque.controller');
 
-var router = express.Router();
+let router = express.Router();
+let multer = require('multer');
+let moment = require('moment')
 
-router.get('/videos/:slug', controller.index);
-router.get('/videos', controller.list);
+module.exports = function() {
+	router.get('/videos/:slug', controller.index);
+	router.get('/videos', controller.list);
 
-router.post('/', controller.create);
+	router.post('/videos', [multer({
+		dest: 'server/uploads/',
+		rename: function(fieldname, filename) {
+			return moment().format('YYYY-MM-DD_HH-mm-ss_') + filename.replace(/\W+/g, '-').toLowerCase();
+		}
+	}), controller.create]);
 
-module.exports = router;
+	return router;
+};

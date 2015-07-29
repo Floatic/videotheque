@@ -77,7 +77,7 @@ angular.module('videothequeApp')
             });
         };
     })
-    .controller('videoInfoCtrl', function($scope, $modalInstance, data) {
+    .controller('videoInfoCtrl', function($scope, $modalInstance, data, $sce) {
         // ***************
         // Modal video info controller
         //****************
@@ -87,6 +87,7 @@ angular.module('videothequeApp')
         //
 
         $scope.video = data.video;
+        $scope.videoPreview = $sce.trustAsHtml(data.video.widgets.widget._);
 
 
         //
