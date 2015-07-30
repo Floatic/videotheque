@@ -17,3 +17,8 @@ app/tests/coverage/
 vagrant_setup_provision.sh~
 *.sublime-workspace
 *.sublime-project
+<<<<<<< HEAD
+*.sublime-workspace
+database.log
+=======
+>>>>>>> master

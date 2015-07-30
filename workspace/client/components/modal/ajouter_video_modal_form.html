@@ -23,6 +23,15 @@
                 <span class="help-block">Description de la vidéo.</span>
             </div>
         </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="videologo">Ajouter un logo:</label>
+            <div class="col-sm-10">
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="videologo" id="videologo" ng-model="video.logo"> &nbsp;
+                </label>
+                <span class="help-block">Ajoute un logo Afpa sur la vidéo.</span>
+            </div>
+        </div>
         <div class="form-group" ng-class="{'has-error': videoDetailsForm.videousage.$dirty && videoDetailsForm.videousage.$invalid, 'has-success': videoDetailsForm.videousage.$valid}">
             <label class="control-label col-sm-2" for="videousage">Usage cible:</label>
             <div class="col-sm-10">

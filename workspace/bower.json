@@ -16,7 +16,9 @@
     "font-awesome": ">=4.3.0",
     "lodash": "~3.10.0",
     "angular-ui-router": "~0.2.15",
-    "angular-dialog-service": "~5.2.8"
+    "angular-dialog-service": "~5.2.8",
+    "angular-socket-io": "~0.7.0",
+    "socket.io-client": "~1.3.6"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

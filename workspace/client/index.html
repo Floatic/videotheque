@@ -59,23 +59,24 @@
       <script src="bower_components/angular-translate/angular-translate.js"></script>
       <script src="bower_components/angular-dialog-service/dist/dialogs.min.js"></script>
       <script src="bower_components/angular-dialog-service/dist/dialogs-default-translations.min.js"></script>
+      <script src="bower_components/angular-socket-io/socket.js"></script>
+      <script src="bower_components/socket.io-client/socket.io.js"></script>
       <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,client}) app/app.js -->
         <script src="app/app.js"></script>
           <!-- injector:js -->
-          <script src="app/ajouter-video/ajouter-video.controller.js"></script>
-          <script src="app/ajouter-video/ajouter-video.js"></script>
           <script src="app/libcast-examples/libcast-examples.controller.js"></script>
           <script src="app/libcast-examples/libcast-examples.js"></script>
-          <script src="app/liste-video/liste-video.controller.js"></script>
-          <script src="app/liste-video/liste-video.js"></script>
-          <script src="app/main/main.controller.js"></script>
-          <script src="app/main/main.js"></script>
+          <script src="app/site/ajouter-video/ajouter-video.controller.js"></script>
+          <script src="app/site/home/home.controller.js"></script>
+          <script src="app/site/liste-video/liste-video.controller.js"></script>
+          <script src="app/site/site.js"></script>
           <script src="components/header/header.controller.js"></script>
           <script src="components/modal/modal.service.js"></script>
           <script src="components/navbar/navbar.controller.js"></script>
+          <script src="components/socket/socket.service.js"></script>
           <!-- endinjector -->
         <!-- endbuild -->
 </body>
