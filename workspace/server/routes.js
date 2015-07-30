@@ -5,11 +5,11 @@
 'use strict';
 
 var errors = require('./components/errors');
+// var debug = require('debug')('test');
 
 module.exports = function(app) {
-
   // Insert routes below
-  app.use('/api/videotheque', require('./api/videotheque'));
+  app.use('/api/videotheque', require('./api/videotheque')());
   app.use('/api/videos', require('./api/video'));
   app.use('/api/things', require('./api/thing'));
 
@@ -20,6 +20,7 @@ module.exports = function(app) {
   // All other routes should redirect to the index.html
   app.route('/*')
     .get(function(req, res) {
+      //Set user ?
       req.session.user = 'guillaume.burguiere@oatic.fr';
 
 

@@ -5,15 +5,6 @@
 'use strict';
 
 let config = require('./environment');
-let session = require('express-session')({
-	// genid: function(req) {
-	//   return genuuid() // use UUIDs for session IDs
-	// },
-	secret: 'keyboard cat',
-	resave: true,
-	saveUninitialized: true
-});
-let sharedsession = require("express-socket.io-session");
 
 // When the user disconnects.. perform this
 function onDisconnect(socket) {}

@@ -21,7 +21,7 @@ angular.module('videothequeApp')
             //
             // Methods
             //
-                socket.emit('test', 'coucou');
+
             // Add button event
             $scope.upload = function () {
                 // console.log('click');
@@ -121,6 +121,7 @@ angular.module('videothequeApp')
             $scope.video = {
                 title: '',
                 description: '',
+                logo: '',
                 usage: '',
                 usagerights: ''
             };

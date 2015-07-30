@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('videothequeApp')
-    .controller('ListeVideoCtrl', function($scope, $http, dialogs) {
+    .controller('ListeVideoCtrl', function($scope, $http, dialogs, socket) {
 
         //
         // Variables
@@ -34,6 +34,11 @@ angular.module('videothequeApp')
             }]
         };
 
+
+        socket.socket.emit('test', {test: 'coucou'}, function(cbdata){
+            console.log(cbdata);
+        });
+
         // Load video list
         $http.get('/api/videotheque/videos').success(function(liste) {
             // var videoListe = JSON.parse(liste);
@@ -43,6 +48,11 @@ angular.module('videothequeApp')
             //                console.log(typeof angular.toJson(liste));
 
             $scope.listeVideo.videos = liste;
+
+
+            socket.socket.emit('test', {test: 'coucou'}, function(cbdata){
+                console.log(cbdata);
+            });
         });
 
         // Column sorting defaults

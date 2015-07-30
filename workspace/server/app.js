@@ -13,16 +13,25 @@ var config = require('./config/environment');
 var app = express();
 var server = require('http').createServer(app);
 
+// Set global root path
+var path = require('path');
+global.appRoot = path.resolve(__dirname);
+
 // Start sessions
-var session = require('express-session');
-app.use(session({
+var session = require('express-session')({
 	// genid: function(req) {
 	//   return genuuid() // use UUIDs for session IDs
 	// },
 	secret: 'keyboard cat',
 	resave: true,
-	saveUninitialized: true
-}));
+	saveUninitialized: true,
+	cookie: { maxAge: 60000 }
+});
+
+// Express and routes middlewares
+require('./config/express')(app, session);
+require('./routes')(app);
+
 
 // Start sockets
 var socketio = require('socket.io')(server, {
@@ -35,10 +44,6 @@ socketio.use(sharedsession(session, {
 	autoSave: true
 }));
 require('./config/socketio')(socketio);
-
-// Express and routes middlewares
-require('./config/express')(app);
-require('./routes')(app);
 
 // Start server
 server.listen(config.port, config.ip, function() {

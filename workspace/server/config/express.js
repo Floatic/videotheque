@@ -19,7 +19,7 @@ var path = require('path');
 // var sharedSession = require('express-socket.io-session');
 var config = require('./environment');
 
-module.exports = function(app) {
+module.exports = function(app, session) {
     var env = app.get('env');
 
     app.set('views', config.root + '/server/views');
@@ -32,6 +32,7 @@ module.exports = function(app) {
     app.use(bodyParser.json());
     app.use(methodOverride());
     app.use(cookieParser());
+    app.use(session);
 /*    app.use(multer({
         dest: config.root + '/server/uploads/',
         rename: function(fieldname, filename) {

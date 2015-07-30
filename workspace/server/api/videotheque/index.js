@@ -5,7 +5,8 @@ let controller = require('./videotheque.controller');
 
 let router = express.Router();
 let multer = require('multer');
-let moment = require('moment')
+let moment = require('moment');
+// var debug = require('debug')('test');
 
 module.exports = function() {
 	router.get('/videos/:slug', controller.index);
